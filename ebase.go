@@ -2,18 +2,16 @@ package ebase
 
 import (
 	"flag"
+	"github.com/jilin7105/ebase/config"
+	"github.com/jilin7105/ebase/logger"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
 )
 
-type Config struct {
-	AppType string `yaml:"appType"`
-}
-
 type Eb struct {
 	ConfigFileName string
-	Config         Config
+	Config         config.Config
 }
 
 // 定义全局的Eb实例
@@ -24,6 +22,10 @@ func init() {
 	ebInstance = &Eb{}
 	ebInstance.ParseFlags()
 	ebInstance.LoadConfig()
+	// 从配置中设置日志级别和日志文件
+	logger.SetLogLevel(ebInstance.Config.LogLevel)
+	logger.SetLogFile(ebInstance.Config.LogFile)
+
 }
 
 func (e *Eb) ParseFlags() {

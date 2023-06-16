@@ -1,1 +1,3 @@
 appType: HTTP #"HTTP", "gRPC", "Task", "Kafka"
+logLevel: 1
+logFile: "mylogfile.log"
