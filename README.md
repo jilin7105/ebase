@@ -1,4 +1,38 @@
 # ebase
+
+`ebase`是一个使用Go编写的微服务框架，可以通过配置文件切换不同的服务类型。
+
+## 主要功能
+
+- 支持切换服务类型，包括HTTP服务器，gRPC服务器，定时任务，Kafka消费服务。
+- 提供心跳检测功能。
+- 提供服务注册功能。
+
+## 快速开始
+
+要使用`ebase`，首先需要下载和安装Go。然后，可以使用`go get`命令下载并安装`ebase`：
+
+```bash
+go get github.com/jilin7105/ebase
+```
+
+在项目初始化时，可以从配置文件中设置日志级别和日志文件：
+``` go
+import _ "github.com/jilin7105/ebase"
+```
+
+在代码中，当需要打印日志时，可以使用logger：
+
+```go
+import "github.com/jilin7105/ebase/logger"
+
+logger.Info("This is an info log.")
+logger.Debug("This is a debug log.")
+logger.Warn("This is a warning log.")
+logger.Error("This is an error log.")
+
+```
+
 | 任务 | 完成 |
 | --- | --- |
 | 创建项目 | ✅ |

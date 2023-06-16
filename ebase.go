@@ -2,9 +2,11 @@ package ebase
 
 import (
 	"flag"
+	"github.com/go-redis/redis/v8"
 	"github.com/jilin7105/ebase/config"
 	"github.com/jilin7105/ebase/logger"
 	"gopkg.in/yaml.v2"
+	"gorm.io/gorm"
 	"io/ioutil"
 	"log"
 )
@@ -12,6 +14,8 @@ import (
 type Eb struct {
 	ConfigFileName string
 	Config         config.Config
+	DBs            map[string]*gorm.DB
+	Redis          map[string]*redis.Client
 }
 
 // 定义全局的Eb实例
@@ -25,7 +29,8 @@ func init() {
 	// 从配置中设置日志级别和日志文件
 	logger.SetLogLevel(ebInstance.Config.LogLevel)
 	logger.SetLogFile(ebInstance.Config.LogFile)
-
+	ebInstance.initRedis()
+	ebInstance.initMysql()
 }
 
 func (e *Eb) ParseFlags() {
