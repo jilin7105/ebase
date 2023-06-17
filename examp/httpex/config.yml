@@ -20,8 +20,6 @@ redis:
     db : 0
     poolSize: 10
 
-
 httpgin:
-  port: 8080  #服务端口
-
-  appendPprof : 0 #是否在路由中添加 pprof 路由
+  port: 9999  #服务端口
+  appendPprof : true #是否在路由中添加 pprof 路由

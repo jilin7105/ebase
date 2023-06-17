@@ -2,10 +2,13 @@ package ebase
 
 import (
 	"flag"
+	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/go-co-op/gocron"
 	"github.com/go-redis/redis/v8"
 	"github.com/jilin7105/ebase/config"
 	"github.com/jilin7105/ebase/logger"
+	ebasehttp "github.com/jilin7105/ebase/server/http"
 	"github.com/jilin7105/ebase/task"
 	"gopkg.in/yaml.v2"
 	"gorm.io/gorm"
@@ -21,6 +24,7 @@ type Eb struct {
 	DBs            map[string]*gorm.DB
 	Redis          map[string]*redis.Client
 	serviceTask    *gocron.Scheduler
+	serciceHttp    *gin.Engine
 	projectPath    string
 }
 
@@ -51,6 +55,7 @@ func Init() {
 func (e *Eb) initServer() {
 	switch e.Config.AppType {
 	case "HTTP":
+		e.serciceHttp = ebasehttp.InitHttp(e.Config)
 		// 创建HTTP服务
 	case "gRPC":
 		// 创建gRPC服务
@@ -84,6 +89,7 @@ func (e *Eb) LoadConfig() {
 func (e *Eb) Run() {
 	switch e.Config.AppType {
 	case "HTTP":
+		e.serciceHttp.Run(fmt.Sprintf(":%d", e.Config.HttpGin.Port))
 		// 创建HTTP服务
 	case "gRPC":
 		// 创建gRPC服务

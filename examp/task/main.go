@@ -10,7 +10,6 @@ func main() {
 
 	ebase.Init()
 	eb := ebase.GetEbInstance()
-
 	s, err := eb.GetTaskServer()
 	//https://github.com/go-co-op/gocron 使用这个库
 	if err != nil {

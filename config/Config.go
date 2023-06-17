@@ -7,6 +7,10 @@ type Config struct {
 	Databases    []DbConfig    `yaml:"databases"`
 	Redis        []RedisConfig `yaml:"redis"`
 	ServicesName string        `yaml:"servies_name"`
+	HttpGin      struct {
+		Port        int  `yaml:"port"`
+		AppendPprof bool `yaml:"appendPprof"`
+	} `yaml:"httpgin"`
 }
 
 type DbConfig struct {
