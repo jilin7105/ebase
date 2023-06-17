@@ -1,11 +1,12 @@
 package config
 
 type Config struct {
-	AppType   string        `yaml:"appType"`
-	LogLevel  int           `yaml:"logLevel"`
-	LogFile   string        `yaml:"logFile"`
-	Databases []DbConfig    `yaml:"databases"`
-	Redis     []RedisConfig `yaml:"redis"`
+	AppType      string        `yaml:"appType"`
+	LogLevel     int           `yaml:"logLevel"`
+	LogFile      string        `yaml:"logFile"`
+	Databases    []DbConfig    `yaml:"databases"`
+	Redis        []RedisConfig `yaml:"redis"`
+	ServicesName string        `yaml:"servies_name"`
 }
 
 type DbConfig struct {

@@ -1,4 +1,4 @@
-appType: HTTP #"HTTP", "gRPC", "Task", "Kafka"
+appType: Task #"HTTP", "gRPC", "Task", "Kafka"
 logLevel: 1
 logFile: "mylogfile.log"
 servies_name: test

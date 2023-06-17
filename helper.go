@@ -2,6 +2,7 @@ package ebase
 
 import (
 	"errors"
+	"github.com/go-co-op/gocron"
 	"github.com/go-redis/redis/v8"
 	"gorm.io/gorm"
 )
@@ -22,4 +23,14 @@ func (e *Eb) GetRedis(name string) (*redis.Client, error) {
 		return nil, errors.New("no such redis client: " + name)
 	}
 	return client, nil
+}
+
+func (e *Eb) GetTaskServer() (*gocron.Scheduler, error) {
+	service := e.serviceTask
+
+	if service == nil {
+		return nil, errors.New("未初始化定时任务服务，请检测服务类型 ")
+	}
+
+	return service, nil
 }
