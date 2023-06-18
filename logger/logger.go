@@ -93,6 +93,8 @@ func Debug(format string, v ...interface{}) {
 	if logLevel <= DebugLevel {
 		checkAndChangeLogfile()
 		debugLogger.Printf(addPrefix()+" "+format, v...)
+	} else {
+		log.Println(fmt.Sprintf(addPrefix()+" "+format, v))
 	}
 }
 
@@ -100,6 +102,8 @@ func Info(format string, v ...interface{}) {
 	if logLevel <= InfoLevel {
 		checkAndChangeLogfile()
 		infoLogger.Printf(addPrefix()+" "+format, v...) //format末尾如果没有换行符会自动加上
+	} else {
+		log.Println(fmt.Sprintf(addPrefix()+" "+format, v))
 	}
 }
 
@@ -107,6 +111,8 @@ func Warn(format string, v ...interface{}) {
 	if logLevel <= WarnLevel {
 		checkAndChangeLogfile()
 		warnLogger.Printf(addPrefix()+" "+format, v...)
+	} else {
+		log.Println(fmt.Sprintf(addPrefix()+" "+format, v))
 	}
 }
 
@@ -114,6 +120,8 @@ func Error(format string, v ...interface{}) {
 	if logLevel <= ErrorLevel {
 		checkAndChangeLogfile()
 		errorLogger.Printf(addPrefix()+" "+format, v...)
+	} else {
+		log.Println(fmt.Sprintf(addPrefix()+" "+format, v))
 	}
 }
 

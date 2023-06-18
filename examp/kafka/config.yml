@@ -1,5 +1,5 @@
-appType: HTTP #"HTTP", "gRPC", "Task", "Kafka"
-logLevel: 1
+appType: Kafka #"HTTP", "gRPC", "Task", "Kafka"
+logLevel: 3
 logFile: "mylogfile.log"
 servies_name: test
 
@@ -23,7 +23,7 @@ redis:
 
 httpgin:
   port: 8080  #服务端口
-  appendPprof : 0 #是否在路由中添加 pprof 路由
+  appendPprof: true #是否在路由中添加 pprof 路由
 
 
 kafkaConsumers:

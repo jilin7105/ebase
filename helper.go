@@ -1,11 +1,15 @@
 package ebase
 
 import (
+	"context"
 	"errors"
+	"github.com/Shopify/sarama"
 	"github.com/gin-gonic/gin"
 	"github.com/go-co-op/gocron"
 	"github.com/go-redis/redis/v8"
+	"github.com/jilin7105/ebase/kafka"
 	"gorm.io/gorm"
+	"log"
 )
 
 // GetDB 提供名字获取数据库连接
@@ -44,4 +48,22 @@ func (e *Eb) GetHttpServer() (*gin.Engine, error) {
 	}
 
 	return service, nil
+}
+
+func (e *Eb) RegisterKafkaHandle(name string, handle sarama.ConsumerGroupHandler) {
+	if _, ok := e.kafkaConsumer[name]; ok {
+		e.kafkaConsumer[name].RegisterHandle(handle)
+	}
+}
+
+//启动kafka 消费
+func (e *Eb) kafkaRun() {
+	for _, consumer := range e.kafkaConsumer {
+		go func(consumer *kafka.KafkaConsumer, ctx context.Context) {
+			log.Printf("Starting Kafka consumer: %s", consumer.Name)
+			if err := consumer.Consume(ctx); err != nil {
+				log.Printf("Error consuming from Kafka (consumer: %s): %v", consumer.Name, err)
+			}
+		}(consumer, e.cxt)
+	}
 }

@@ -1,12 +1,14 @@
 package ebase
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-co-op/gocron"
 	"github.com/go-redis/redis/v8"
 	"github.com/jilin7105/ebase/config"
+	"github.com/jilin7105/ebase/kafka"
 	"github.com/jilin7105/ebase/logger"
 	ebasehttp "github.com/jilin7105/ebase/server/http"
 	"github.com/jilin7105/ebase/task"
@@ -19,6 +21,7 @@ import (
 )
 
 type Eb struct {
+	cxt            context.Context
 	ConfigFileName string
 	Config         config.Config
 	DBs            map[string]*gorm.DB
@@ -26,6 +29,7 @@ type Eb struct {
 	serviceTask    *gocron.Scheduler
 	serciceHttp    *gin.Engine
 	projectPath    string
+	kafkaConsumer  map[string]*kafka.KafkaConsumer
 }
 
 // 定义全局的Eb实例
@@ -35,6 +39,7 @@ var ebInstance *Eb
 func Init() {
 
 	ebInstance = &Eb{
+		cxt:   context.Background(),
 		DBs:   map[string]*gorm.DB{},
 		Redis: map[string]*redis.Client{},
 	}
@@ -56,17 +61,23 @@ func (e *Eb) initServer() {
 	switch e.Config.AppType {
 	case "HTTP":
 		e.serciceHttp = ebasehttp.InitHttp(e.Config)
+		logger.Info("--------------------http服务器初始化------------------")
 		// 创建HTTP服务
 	case "gRPC":
 		// 创建gRPC服务
 	case "Task":
 		e.serviceTask = task.InitTaskServer()
-		logger.Info("--------------------定时任务启动------------------")
+		logger.Info("--------------------定时任务初始化------------------")
 		// 创建任务服务
 	case "Kafka":
-		// 创建Kafka服务
+		var err error
+		e.kafkaConsumer, err = kafka.NewKafkaConsumers(e.Config)
+		if err != nil {
+			logger.Error("kafka 初始化失败", err)
+		}
 	default:
-		log.Fatalf("unknown appType: %v", e.Config.AppType)
+		logger.Error("unknown appType: %v", e.Config.AppType)
+
 	}
 }
 func (e *Eb) ParseFlags() {
@@ -98,7 +109,7 @@ func (e *Eb) Run() {
 		logger.Info("--------------------定时任务启动------------------")
 		// 创建任务服务
 	case "Kafka":
-		// 创建Kafka服务
+		e.kafkaRun()
 	default:
 		log.Fatalf("unknown appType: %v", e.Config.AppType)
 	}
@@ -106,6 +117,5 @@ func (e *Eb) Run() {
 
 // 提供一个函数来获取全局的Eb实例
 func GetEbInstance() *Eb {
-
 	return ebInstance
 }
