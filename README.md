@@ -96,10 +96,22 @@ log.Printf("Message is stored in topic(%s)/partition(%d)/offset(%d)\n", topic, p
 ```
 
 
+### 配置文件相关 
+
+[配置文件示例，**仅支持yml格式**](https://github.com/jilin7105/ebase/tree/main/config.yml)
+```shell
+ # 默认config.yml 
+ # 可以通过-i 进行指定
+ # 配置文件需要在项目根目录下
+ go build && ./{你的执行文件名称}  -i  config-online.yml 
+```
+
 
 ### [在代码中 http 服务使用](https://github.com/jilin7105/ebase/tree/main/examp/httpex)
 ### [在代码中 定时任务 服务使用](https://github.com/jilin7105/ebase/tree/main/examp/task)
 ### [在代码中 kafka消费 服务使用](https://github.com/jilin7105/ebase/tree/main/examp/kafka)
+
+
 
 | 任务 | 完成 |
 | --- | --- |
