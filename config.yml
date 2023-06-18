@@ -1,7 +1,7 @@
 appType: HTTP #"HTTP", "gRPC", "Task", "Kafka"
-logLevel: 1
-logFile: "mylogfile.log"
-servies_name: test
+logLevel: 1   #日志记录登记
+logFile: "mylogfile.log"  #日志文件地址  可以选择  logs/a.log  最前面不要带 “/”  并且请确保文件夹存在
+servies_name: test   #服务名称
 
 databases:
   - name: test
