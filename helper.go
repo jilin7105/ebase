@@ -13,21 +13,30 @@ import (
 )
 
 // GetDB 提供名字获取数据库连接
-func GetDB(name string) (*gorm.DB, error) {
+func GetDB(name string) *gorm.DB {
 	db, ok := ebInstance.DBs[name]
 	if !ok {
-		return nil, errors.New("no such database: " + name)
+		return nil
 	}
-	return db, nil
+	return db
 }
 
 // GetRedis 提供名字获取Redis客户端
-func GetRedis(name string) (*redis.Client, error) {
+func GetRedis(name string) *redis.Client {
 	client, ok := ebInstance.Redis[name]
 	if !ok {
-		return nil, errors.New("no such redis client: " + name)
+		return nil
 	}
-	return client, nil
+	return client
+}
+
+//GetKafka 获取Kafka生产者
+func GetKafka(name string) *sarama.SyncProducer {
+	client, ok := ebInstance.kafkaProducer[name]
+	if !ok {
+		return nil
+	}
+	return client
 }
 
 func (e *Eb) GetTaskServer() (*gocron.Scheduler, error) {

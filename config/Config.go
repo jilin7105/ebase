@@ -6,6 +6,7 @@ type Config struct {
 	LogFile        string                 `yaml:"logFile"`
 	Databases      []DbConfig             `yaml:"databases"`
 	Redis          []RedisConfig          `yaml:"redis"`
+	KafkaProducers []KafkaProducerConfig  `yaml:"kafkaProducers"`
 	ServicesName   string                 `yaml:"servies_name"`
 	KafkaConsumers []*KafkaConsumerConfig `yaml:"kafkaConsumers"`
 	HttpGin        struct {
@@ -43,4 +44,19 @@ type KafkaConsumerConfig struct {
 	MaxWaitTime       int      `yaml:"maxWaitTime"`
 	SessionTimeout    int      `yaml:"sessionTimeout"`
 	HeartbeatInterval int      `yaml:"heartbeatInterval"`
+}
+
+type KafkaProducerConfig struct {
+	Name                 string   `yaml:"name"`
+	Brokers              []string `yaml:"brokers"`
+	Topic                string   `yaml:"topic"`
+	Compression          string   `yaml:"compression"`
+	Timeout              int      `yaml:"timeout"`
+	BatchSize            int      `yaml:"batchSize"`
+	BatchTime            int      `yaml:"batchTime"`
+	WaitForAll           bool     `yaml:"waitForAll"`
+	MaxRetries           int      `yaml:"maxRetries"`
+	RetryBackoff         int      `yaml:"retryBackoff"`
+	ReturnSuccesses      bool     `yaml:"returnSuccesses"`
+	NewManualPartitioner bool     `yaml:"newManualPartitioner"`
 }

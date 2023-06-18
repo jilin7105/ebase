@@ -33,6 +33,70 @@ logger.Error("This is an error log.")
 
 ```
 
+在代码中使用数据库
+```go
+import "github.com/jilin7105/ebase"
+db := ebase.GetDB("db_name")
+//此处返回gorm.db对象
+if db == nil {
+    panic("数据库不存在")
+}
+type Product struct {
+    gorm.Model
+    Code  string
+    Price uint
+}
+var product Product
+db.First(&product, 1)
+```
+
+在代码中使用redis
+```go
+import "github.com/jilin7105/ebase"
+rdb := ebase.GetRedis("redis_name")
+if rdb == nil {
+    panic("redis 不存在")
+}
+val, err := rdb.Get(ctx, "score").Result()
+if err != nil {
+    log.Fatal(err)
+}
+w.Write([]byte(fmt.Sprintf("score的值: %v", val)))
+```
+
+在代码中使用 Kafka
+```go
+import (
+    "github.com/Shopify/sarama"
+	"github.com/jilin7105/ebase"
+)
+kp := *ebase.GetKafka("Producer_name")
+if kp == nil {
+    panic("KafkaProducer 不存在")
+}
+topic := "your topic"
+
+msg := &sarama.ProducerMessage{
+    Topic: "your topic",
+	//newManualPartitioner: true  #是否手动分配分区
+	//如果手动分区选择true ，需要手动设置分区 增加如下代码
+	//Partition: int32(your_partition_number),  // 设置分区号
+    Value: sarama.StringEncoder("Hello World"),
+}
+
+
+
+partition, offset, err := kp.SendMessage(msg)
+if err != nil {
+    log.Fatalln("Failed to send message:", err)
+}
+
+log.Printf("Message is stored in topic(%s)/partition(%d)/offset(%d)\n", topic, partition, offset)
+
+```
+
+
+
 ### [在代码中 http 服务使用](https://github.com/jilin7105/ebase/tree/main/examp/httpex)
 ### [在代码中 定时任务 服务使用](https://github.com/jilin7105/ebase/tree/main/examp/task)
 ### [在代码中 kafka消费 服务使用](https://github.com/jilin7105/ebase/tree/main/examp/kafka)

@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/Shopify/sarama"
 	"github.com/gin-gonic/gin"
 	"github.com/go-co-op/gocron"
 	"github.com/go-redis/redis/v8"
@@ -26,6 +27,7 @@ type Eb struct {
 	Config         config.Config
 	DBs            map[string]*gorm.DB
 	Redis          map[string]*redis.Client
+	kafkaProducer  map[string]*sarama.SyncProducer
 	serviceTask    *gocron.Scheduler
 	serciceHttp    *gin.Engine
 	projectPath    string
@@ -44,9 +46,9 @@ func Init() {
 		Redis: map[string]*redis.Client{},
 	}
 	_, filePath, _, _ := runtime.Caller(1)
-	log.Println(filePath)
+
 	ebInstance.projectPath = filepath.Dir(filePath)
-	log.Println(ebInstance.projectPath)
+
 	ebInstance.ParseFlags()
 	ebInstance.LoadConfig()
 	// 从配置中设置日志级别和日志文件
@@ -54,6 +56,7 @@ func Init() {
 	logger.SetLogFile(ebInstance.projectPath + "/" + ebInstance.Config.LogFile)
 	ebInstance.initRedis()
 	ebInstance.initMysql()
+	ebInstance.InitKafkaProducer()
 	ebInstance.initServer()
 }
 
@@ -105,8 +108,9 @@ func (e *Eb) Run() {
 	case "gRPC":
 		// 创建gRPC服务
 	case "Task":
-		e.serviceTask.StartBlocking()
 		logger.Info("--------------------定时任务启动------------------")
+		e.serviceTask.StartBlocking()
+
 		// 创建任务服务
 	case "Kafka":
 		e.kafkaRun()
