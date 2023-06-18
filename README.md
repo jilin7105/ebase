@@ -33,6 +33,10 @@ logger.Error("This is an error log.")
 
 ```
 
+在代码中 http 服务使用 ：
+
+
+
 | 任务 | 完成 |
 | --- | --- |
 | 创建项目 | ✅ |
@@ -43,7 +47,7 @@ logger.Error("This is an error log.")
 | 创建HTTP服务 | ✅ |
 | 创建gRPC服务 |  |
 | 创建任务服务 | ✅ |
-| 创建Kafka服务 |  |
+| 创建Kafka服务 | ✅ |
 | 添加测试 |  |
 | 添加文档 |  |
 
