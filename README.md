@@ -5,8 +5,8 @@
 ## 主要功能
 
 - 支持切换服务类型，包括HTTP服务器，gRPC服务器，定时任务，Kafka消费服务。
-- 提供心跳检测功能。
-- 提供服务注册功能。
+- 提供心跳检测功能。 (还未提供)
+- 提供服务注册功能。 (还未提供)
 
 ## 快速开始
 
@@ -33,9 +33,9 @@ logger.Error("This is an error log.")
 
 ```
 
-在代码中 http 服务使用 ：
-
-
+[在代码中 http 服务使用](https://github.com/jilin7105/ebase/tree/main/examp/httpex)
+[在代码中 定时任务 服务使用](https://github.com/jilin7105/ebase/tree/main/examp/task)
+[在代码中 kafka消费 服务使用](https://github.com/jilin7105/ebase/tree/main/examp/kafka)
 
 | 任务 | 完成 |
 | --- | --- |
