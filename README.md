@@ -105,7 +105,8 @@ log.Printf("Message is stored in topic(%s)/partition(%d)/offset(%d)\n", topic, p
  # 配置文件需要在项目根目录下
  go build && ./{你的执行文件名称}  -i  config-online.yml 
 ```
-
+### 辅助函数
+[**辅助函数文档**](https://github.com/jilin7105/ebase/tree/main/doc/helpfunc.md)
 
 ### [在代码中 http 服务使用](https://github.com/jilin7105/ebase/tree/main/examp/httpex)
 ### [在代码中 定时任务 服务使用](https://github.com/jilin7105/ebase/tree/main/examp/task)
