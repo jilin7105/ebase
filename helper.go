@@ -3,13 +3,16 @@ package ebase
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/Shopify/sarama"
 	"github.com/gin-gonic/gin"
 	"github.com/go-co-op/gocron"
 	"github.com/go-redis/redis/v8"
 	"github.com/jilin7105/ebase/kafka"
+	"google.golang.org/grpc"
 	"gorm.io/gorm"
 	"log"
+	"net"
 )
 
 // GetDB 提供名字获取数据库连接
@@ -49,6 +52,16 @@ func (e *Eb) GetTaskServer() (*gocron.Scheduler, error) {
 	return service, nil
 }
 
+func (e *Eb) GetGrpcServer() (*grpc.Server, error) {
+	service := e.grpcServer
+
+	if service == nil {
+		return nil, errors.New("未初始化定时任务服务(Grpc)，请检测服务类型 ")
+	}
+
+	return service, nil
+}
+
 func (e *Eb) GetHttpServer() (*gin.Engine, error) {
 	service := e.serciceHttp
 
@@ -75,4 +88,14 @@ func (e *Eb) kafkaRun() {
 			}
 		}(consumer, e.cxt)
 	}
+}
+
+//启动kafka 消费
+func (e *Eb) grpcRun() {
+	port := e.Config.GrpcServer.Port
+	ln, err := net.Listen("tcp", fmt.Sprintf(":%v", port))
+	if err != nil {
+		panic(err)
+	}
+	e.grpcServer.Serve(ln)
 }

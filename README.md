@@ -121,7 +121,7 @@ log.Printf("Message is stored in topic(%s)/partition(%d)/offset(%d)\n", topic, p
 | 加载配置文件 | ✅ |
 | 初始化Eb结构体 | ✅ |
 | 创建HTTP服务 | ✅ |
-| 创建gRPC服务 |  |
+| 创建gRPC服务 | ✅ |
 | 创建任务服务 | ✅ |
 | 创建Kafka服务 | ✅ |
 | 添加测试 |  |

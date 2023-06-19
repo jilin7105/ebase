@@ -11,8 +11,10 @@ import (
 	"github.com/jilin7105/ebase/config"
 	"github.com/jilin7105/ebase/kafka"
 	"github.com/jilin7105/ebase/logger"
+	ebasegrpc "github.com/jilin7105/ebase/server/grpc"
 	ebasehttp "github.com/jilin7105/ebase/server/http"
 	"github.com/jilin7105/ebase/task"
+	"google.golang.org/grpc"
 	"gopkg.in/yaml.v2"
 	"gorm.io/gorm"
 	"io/ioutil"
@@ -32,6 +34,7 @@ type Eb struct {
 	serciceHttp    *gin.Engine
 	projectPath    string
 	kafkaConsumer  map[string]*kafka.KafkaConsumer
+	grpcServer     *grpc.Server
 }
 
 // 定义全局的Eb实例
@@ -67,6 +70,7 @@ func (e *Eb) initServer() {
 		logger.Info("--------------------http服务器初始化------------------")
 		// 创建HTTP服务
 	case "gRPC":
+		e.grpcServer = ebasegrpc.InitRpcService(e.Config)
 		// 创建gRPC服务
 	case "Task":
 		e.serviceTask = task.InitTaskServer()
@@ -103,14 +107,16 @@ func (e *Eb) LoadConfig() {
 func (e *Eb) Run() {
 	switch e.Config.AppType {
 	case "HTTP":
+		logger.Info("--------------------http启动------------------")
 		e.serciceHttp.Run(fmt.Sprintf(":%d", e.Config.HttpGin.Port))
 		// 创建HTTP服务
 	case "gRPC":
+		logger.Info("--------------------grpc启动------------------")
+		e.grpcRun()
 		// 创建gRPC服务
 	case "Task":
 		logger.Info("--------------------定时任务启动------------------")
 		e.serviceTask.StartBlocking()
-
 		// 创建任务服务
 	case "Kafka":
 		e.kafkaRun()

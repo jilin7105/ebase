@@ -12,7 +12,11 @@ type Config struct {
 	HttpGin        struct {
 		Port        int  `yaml:"port"`
 		AppendPprof bool `yaml:"appendPprof"`
-	} `yaml:"httpgin"`
+	} `yaml:"httpginServer"`
+	GrpcServer struct {
+		Port          int  `yaml:"port"`
+		TraceTracking bool `yaml:"traceTracking"`
+	} `yaml:"grpcServer"`
 }
 
 type DbConfig struct {

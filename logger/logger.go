@@ -94,7 +94,7 @@ func Debug(format string, v ...interface{}) {
 		checkAndChangeLogfile()
 		debugLogger.Printf(addPrefix()+" "+format, v...)
 	} else {
-		log.Println(fmt.Sprintf(addPrefix()+" "+format, v))
+		fmt.Printf("[DEBUG] "+addPrefix()+" "+format+"\n", v...)
 	}
 }
 
@@ -103,7 +103,7 @@ func Info(format string, v ...interface{}) {
 		checkAndChangeLogfile()
 		infoLogger.Printf(addPrefix()+" "+format, v...) //format末尾如果没有换行符会自动加上
 	} else {
-		log.Println(fmt.Sprintf(addPrefix()+" "+format, v))
+		fmt.Printf("[INFO] "+addPrefix()+" "+format+"\n", v...)
 	}
 }
 
@@ -112,7 +112,7 @@ func Warn(format string, v ...interface{}) {
 		checkAndChangeLogfile()
 		warnLogger.Printf(addPrefix()+" "+format, v...)
 	} else {
-		log.Println(fmt.Sprintf(addPrefix()+" "+format, v))
+		fmt.Printf("[WARN] "+addPrefix()+" "+format+"\n", v...)
 	}
 }
 
@@ -121,7 +121,7 @@ func Error(format string, v ...interface{}) {
 		checkAndChangeLogfile()
 		errorLogger.Printf(addPrefix()+" "+format, v...)
 	} else {
-		log.Println(fmt.Sprintf(addPrefix()+" "+format, v))
+		fmt.Printf("[ERROR] "+addPrefix()+" "+format+"\n", v...)
 	}
 }
 
