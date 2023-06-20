@@ -108,7 +108,8 @@ func (e *Eb) Run() {
 	switch e.Config.AppType {
 	case "HTTP":
 		logger.Info("--------------------http启动------------------")
-		e.serciceHttp.Run(fmt.Sprintf(":%d", e.Config.HttpGin.Port))
+		logger.Info("port", e.Config.HttpGin.Port)
+		e.serciceHttp.Run(fmt.Sprintf(":%v", e.Config.HttpGin.Port))
 		// 创建HTTP服务
 	case "gRPC":
 		logger.Info("--------------------grpc启动------------------")

@@ -10,8 +10,9 @@ type Config struct {
 	ServicesName   string                 `yaml:"servies_name"`
 	KafkaConsumers []*KafkaConsumerConfig `yaml:"kafkaConsumers"`
 	HttpGin        struct {
-		Port        int  `yaml:"port"`
-		AppendPprof bool `yaml:"appendPprof"`
+		Port               int  `yaml:"port"`
+		AppendPprof        bool `yaml:"appendPprof"`
+		IPConcurrencyLimit int  `yaml:"iPConcurrencyLimit"`
 	} `yaml:"httpginServer"`
 	GrpcServer struct {
 		Port          int  `yaml:"port"`

@@ -4,7 +4,7 @@ logFile: "mylogfile.log"
 servies_name: test
 
 databases:
-  - name: test
+  - name: test11
     host: 127.0.0.1
     port: 3306
     username: root
@@ -13,13 +13,13 @@ databases:
     maxIdleConns: 10
     MaxOpenConns: 10
 redis:
-  - name: test
+  - name: test22
     host : 127.0.0.1
     port : 6379
     password:
     db : 0
     poolSize: 10
 
-httpgin:
+httpginServer:
   port: 9999  #服务端口
   appendPprof : true #是否在路由中添加 pprof 路由

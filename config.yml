@@ -39,10 +39,12 @@ kafkaProducers:
 httpginServer:
   port: 8080  #服务端口
   appendPprof : true #是否在路由中添加 pprof 路由
+  iPConcurrencyLimit: 5 #单ip 最大并发数控制  0 为不限制 ，将不处理ip并发问题
 
 grpcServer:
   port: 8080  #服务端口
   traceTracking : true #是否开启链路追踪
+
 
 kafkaConsumers:
   - name: "Consumer1"

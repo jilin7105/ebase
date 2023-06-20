@@ -12,6 +12,7 @@ func main() {
 
 	ebase.Init()
 	eb := ebase.GetEbInstance()
+	log.Println(eb.Config)
 	r, err := eb.GetHttpServer()
 	//gin 库
 	if err != nil {
