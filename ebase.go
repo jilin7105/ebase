@@ -9,7 +9,6 @@ import (
 	"github.com/go-co-op/gocron"
 	"github.com/go-redis/redis/v8"
 	"github.com/jilin7105/ebase/config"
-	"github.com/jilin7105/ebase/helpfunc"
 	"github.com/jilin7105/ebase/kafka"
 	"github.com/jilin7105/ebase/logger"
 	ebasegrpc "github.com/jilin7105/ebase/server/grpc"
@@ -20,6 +19,7 @@ import (
 	"gorm.io/gorm"
 	"io/ioutil"
 	"log"
+	"os"
 )
 
 type Eb struct {
@@ -48,8 +48,10 @@ func Init() {
 		Redis: map[string]*redis.Client{},
 	}
 	//用于兼容只是用 二进制文件
-	filePath := helpfunc.GetCurrentAbPath()
-
+	filePath, err := os.Getwd()
+	if err != nil {
+		return
+	}
 	ebInstance.projectPath = filePath
 
 	ebInstance.ParseFlags()
