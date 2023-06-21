@@ -20,7 +20,6 @@ import (
 	"gorm.io/gorm"
 	"io/ioutil"
 	"log"
-	"path/filepath"
 )
 
 type Eb struct {
@@ -51,7 +50,7 @@ func Init() {
 	//用于兼容只是用 二进制文件
 	filePath := helpfunc.GetCurrentAbPath()
 
-	ebInstance.projectPath = filepath.Dir(filePath)
+	ebInstance.projectPath = filePath
 
 	ebInstance.ParseFlags()
 	ebInstance.LoadConfig()
