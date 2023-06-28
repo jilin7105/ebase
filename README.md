@@ -16,11 +16,6 @@
 go get github.com/jilin7105/ebase
 ```
 
-在项目初始化时，可以从配置文件中设置日志级别和日志文件：
-``` go
-import _ "github.com/jilin7105/ebase"
-```
-
 在代码中，当需要打印日志时，可以使用logger：
 
 ```go

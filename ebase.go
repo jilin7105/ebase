@@ -37,22 +37,30 @@ type Eb struct {
 }
 
 // 定义全局的Eb实例
-var ebInstance *Eb
+var ebInstance = &Eb{
+	cxt:           context.Background(),
+	DBs:           map[string]*gorm.DB{},
+	Redis:         map[string]*redis.Client{},
+	kafkaProducer: map[string]*sarama.SyncProducer{},
+}
+
+func SetProjectPath(path string) {
+	ebInstance.projectPath = path
+}
 
 // 在init函数中初始化全局的Eb实例
 func Init() {
 
-	ebInstance = &Eb{
-		cxt:   context.Background(),
-		DBs:   map[string]*gorm.DB{},
-		Redis: map[string]*redis.Client{},
-	}
 	//用于兼容只是用 二进制文件
-	filePath, err := os.Getwd()
-	if err != nil {
-		return
+
+	if ebInstance.projectPath == "" {
+		filePath, err := os.Getwd()
+		if err != nil {
+			return
+		}
+
+		ebInstance.projectPath = filePath
 	}
-	ebInstance.projectPath = filePath
 
 	ebInstance.ParseFlags()
 	ebInstance.LoadConfig()

@@ -6,13 +6,26 @@ import (
 	"github.com/jilin7105/ebase"
 	_ "github.com/jilin7105/ebase"
 	"log"
+	"os"
+	"path/filepath"
 )
 
-func main() {
+func getExecutableDir() (string, error) {
+	executablePath, err := os.Executable()
+	if err != nil {
+		return "", err
+	}
 
+	executableDir := filepath.Dir(executablePath)
+	return executableDir, nil
+}
+func main() {
+	path, _ := os.Getwd()
+
+	ebase.SetProjectPath(path)
 	ebase.Init()
 	eb := ebase.GetEbInstance()
-	log.Println(eb.Config)
+
 	r, err := eb.GetHttpServer()
 	//gin 库
 	if err != nil {
