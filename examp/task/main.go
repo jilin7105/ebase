@@ -7,6 +7,7 @@ import (
 	"log"
 )
 
+//使用go run main.go  启动测试服务
 func main() {
 
 	ebase.Init()

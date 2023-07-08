@@ -18,7 +18,14 @@ type Config struct {
 		Port          int  `yaml:"port"`
 		TraceTracking bool `yaml:"traceTracking"`
 	} `yaml:"grpcServer"`
+	Micro struct {
+		IsReg          bool  `yaml:"is_reg"`           //  is_reg : true  #是否有服务注册
+		IsHeartPush    bool  `yaml:"is_heart_push"`    //  is_heart_push : true  #是否心跳推送
+		HeartPushSpeed int64 `yaml:"heart_push_speed"` //  is_reg : true  #是否有服务注册
+	} `yaml:"micro"` //micro :
 }
+
+//  heart_push_speed : 5  #心跳推送速度 单位 秒
 
 type DbConfig struct {
 	Name         string `yaml:"name"`

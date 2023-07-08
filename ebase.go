@@ -34,6 +34,8 @@ type Eb struct {
 	projectPath    string
 	kafkaConsumer  map[string]*kafka.KafkaConsumer
 	grpcServer     *grpc.Server
+	regfunc        func() error
+	heartbeatPush  func() error
 }
 
 // 定义全局的Eb实例
@@ -71,6 +73,9 @@ func Init() {
 	ebInstance.initMysql()
 	ebInstance.InitKafkaProducer()
 	ebInstance.initServer()
+
+	//开启心跳检测，服务注册
+	ebInstance.Initmicro()
 }
 
 func (e *Eb) initServer() {

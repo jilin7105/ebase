@@ -4,6 +4,7 @@ import (
 	"github.com/Shopify/sarama"
 	"github.com/jilin7105/ebase"
 	"log"
+	"os"
 )
 
 // 定义消费者组的处理器
@@ -27,7 +28,11 @@ func (h consumerGroupHandler) ConsumeClaim(sess sarama.ConsumerGroupSession, cla
 	return nil
 }
 
+//使用go run main.go  启动测试服务
 func main() {
+	path, _ := os.Getwd()
+
+	ebase.SetProjectPath(path)
 	ebase.Init()
 	eb := ebase.GetEbInstance()
 	eb.RegisterKafkaHandle("Consumer1", consumerGroupHandler{})

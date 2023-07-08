@@ -5,8 +5,8 @@
 ## 主要功能
 
 - 支持切换服务类型，包括HTTP服务器，gRPC服务器，定时任务，Kafka消费服务。
-- 提供心跳检测功能。 (还未提供)
-- 提供服务注册功能。 (还未提供)
+- 提供心跳检测功能。 (简易实现)
+- 提供服务注册功能。 (简易实现)
 
 ## 快速开始
 
@@ -15,6 +15,15 @@
 ```bash
 go get github.com/jilin7105/ebase
 ```
+
+给eb传入当前工作目录， 由于各种原因， 防止ebase获取不到工作目录，或者获取不准确
+```go
+	path, _ := os.Getwd()
+
+	ebase.SetProjectPath(path)
+```
+
+
 
 在代码中，当需要打印日志时，可以使用logger：
 
@@ -90,10 +99,40 @@ log.Printf("Message is stored in topic(%s)/partition(%d)/offset(%d)\n", topic, p
 
 ```
 
+### 微服务
+```yaml
+micro : # 微服务相关配置  （非必须）
+  is_reg : true  #是否有服务注册
+  is_heart_push : true  #是否心跳推送
+  heart_push_speed : 5  #心跳推送速度 单位 秒  如果不填写将只执行1次 ，默认用户方法内部处理心跳逻辑
+```
+
+都是简单实现， 服务检测到微服务相关配置后 
+```go
+	//增加心跳推送   未使用 heart_push_speed   go f()  形式执行一次
+	//如果使用heart_push_speed   
+	//原理 go fun(){ 
+	//    for{
+	//		f()    //你的方法
+	//		time.sleep(heart_push_speed  )
+    //    }       
+	//}
+	ebase.SetHeartbeatPush(func() error {
+		log.Println("HeartbeatPush")
+		return nil
+	})
+
+	//增加服务注册   go f()  形式执行一次
+	ebase.SetRegfunc(func() error {
+		log.Println("Regfunc")
+		return nil
+	})
+```
+
 
 ### 配置文件相关 
 
-[配置文件示例，**仅支持yml格式**](https://github.com/jilin7105/ebase/tree/main/config.yml)
+[配置文件示例，**仅支持yml格式**](https://github.com/jilin7105/ebase/tree/main/ex.config.yml)
 ```shell
  # 默认config.yml 
  # 可以通过-i 进行指定

@@ -9,6 +9,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 	"log"
+	"os"
 	"time"
 )
 
@@ -66,8 +67,10 @@ func (a AuthClr) Register(ctx context.Context, in *user.RegisterRequest) (*user.
 	panic("implement me")
 }
 
+//使用go run main.go  启动测试服务
 func main() {
-
+	path, _ := os.Getwd()
+	ebase.SetProjectPath(path)
 	ebase.Init()
 	eb := ebase.GetEbInstance()
 	s, err := eb.GetGrpcServer()
