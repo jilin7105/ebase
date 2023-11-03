@@ -103,7 +103,7 @@ func (e *Eb) grpcRun() {
 }
 
 //自动加载配置文件
-func (e *Eb) SelfLoadConfig(out *interface{}) error {
+func (e *Eb) SelfLoadConfig(out interface{}) error {
 	data, err := ioutil.ReadFile(e.projectPath + "/" + e.ConfigFileName)
 	if err != nil {
 		log.Fatalf("failed to read config file %s: %v", e.ConfigFileName, err)

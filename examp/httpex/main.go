@@ -20,6 +20,11 @@ func getExecutableDir() (string, error) {
 	return executableDir, nil
 }
 
+type Myconfig struct {
+	//配置文件
+	Auto string `json:"auto"`
+}
+
 //使用go run main.go  启动测试服务
 func main() {
 	path, _ := os.Getwd()
@@ -27,7 +32,9 @@ func main() {
 	ebase.SetProjectPath(path)
 	ebase.Init()
 	eb := ebase.GetEbInstance()
-
+	mycfg := Myconfig{}
+	eb.SelfLoadConfig(&mycfg)
+	log.Printf("++%v", mycfg)
 	r, err := eb.GetHttpServer()
 	//gin 库
 	if err != nil {

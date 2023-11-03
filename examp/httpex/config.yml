@@ -23,3 +23,6 @@ redis:
 httpginServer:
   port: 9999  #服务端口
   appendPprof : true #是否在路由中添加 pprof 路由
+
+
+auto: 123344
