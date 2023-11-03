@@ -10,7 +10,9 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/jilin7105/ebase/kafka"
 	"google.golang.org/grpc"
+	"gopkg.in/yaml.v2"
 	"gorm.io/gorm"
+	"io/ioutil"
 	"log"
 	"net"
 )
@@ -98,4 +100,20 @@ func (e *Eb) grpcRun() {
 		panic(err)
 	}
 	e.grpcServer.Serve(ln)
+}
+
+//自动加载配置文件
+func (e *Eb) SelfLoadConfig(out *interface{}) error {
+	data, err := ioutil.ReadFile(e.projectPath + "/" + e.ConfigFileName)
+	if err != nil {
+		log.Fatalf("failed to read config file %s: %v", e.ConfigFileName, err)
+		return err
+	}
+
+	err = yaml.Unmarshal(data, out)
+	if err != nil {
+		log.Fatalf("failed to unmarshal config file %s: %v", e.ConfigFileName, err)
+		return err
+	}
+	return err
 }

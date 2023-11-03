@@ -45,3 +45,16 @@ kafkaConsumers:
     sessionTimeout: 10000  # 消费者组会话的超时时间（毫秒）
     heartbeatInterval: 3000  # 心跳间隔时间（毫秒）
 
+kafkaProducers:
+  - name: kafkatest
+    brokers: ["172.16.179.206:9092",] # Kafka集群的地址列表
+    topic: auto_test_advertiser_action # 默认的主题
+    compression: gzip # 消息压缩方式，可选的值包括"gzip"、"snappy"、"lz4"、"zstd"、"none"
+    timeout: 5000 # 发送消息的超时时间，单位为毫秒
+    batchSize: 500 # 批量发送的消息数量，超过这个数量后就发送
+    batchTime: 5000  # 批量发送的时间间隔，超过这个时间就发送，单位为毫秒
+    waitForAll: true  # 是否等待服务器所有副本都保存成功后再返回
+    maxRetries: 3 # 重试的最大次数
+    retryBackoff: 100  # 两次重试之间的时间间隔，单位为毫秒
+    returnSuccesses: false   # 是否返回成功发送的消息
+    newManualPartitioner: false  #是否手动分配分区

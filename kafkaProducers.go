@@ -9,7 +9,7 @@ import (
 
 func newKafkaProducer(config config.KafkaProducerConfig) (*sarama.SyncProducer, error) {
 	saramaConfig := sarama.NewConfig()
-
+	saramaConfig.Producer.Return.Successes = true
 	// 设置默认值
 	if config.Timeout == 0 {
 		config.Timeout = 5000
@@ -72,7 +72,7 @@ func (e *Eb) InitKafkaProducer() {
 	for _, config := range e.Config.KafkaProducers {
 		Producer, err := newKafkaProducer(config)
 		if err != nil {
-			logger.Error("kafka 消费者 初始化失败 %s", config.Name)
+			logger.Error("kafka 消费者 初始化失败 %s %s", config.Name, err.Error())
 		}
 		e.kafkaProducer[config.Name] = Producer
 	}
