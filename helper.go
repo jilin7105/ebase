@@ -117,3 +117,8 @@ func (e *Eb) SelfLoadConfig(out interface{}) error {
 	}
 	return err
 }
+
+//写入退出回调信息
+func (e *Eb) SetStopFunc(f func()) {
+	e.stopFunc = f
+}

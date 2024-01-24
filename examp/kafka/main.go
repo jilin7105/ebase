@@ -23,6 +23,7 @@ func (h consumerGroupHandler) ConsumeClaim(sess sarama.ConsumerGroupSession, cla
 		log.Printf("从主题 %s 收到消息: %s\n", msg.Topic, string(msg.Value))
 		// 在这里处理你的消息
 		// 标记消息已处理
+
 		sess.MarkMessage(msg, "")
 	}
 	return nil

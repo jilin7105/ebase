@@ -20,6 +20,8 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"os/signal"
+	"syscall"
 )
 
 type Eb struct {
@@ -36,6 +38,7 @@ type Eb struct {
 	grpcServer     *grpc.Server
 	regfunc        func() error
 	heartbeatPush  func() error
+	stopFunc       func()
 }
 
 // 定义全局的Eb实例
@@ -120,6 +123,11 @@ func (e *Eb) LoadConfig() {
 }
 
 func (e *Eb) Run() {
+	//创建监听退出chan
+	c := make(chan os.Signal, 1)
+	//监听指定信号 ctrl+c kill
+	signal.Notify(c, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+	go e.stop(c) //退出方法
 	switch e.Config.AppType {
 	case "HTTP":
 		logger.Info("--------------------http启动------------------")
@@ -138,6 +146,26 @@ func (e *Eb) Run() {
 		e.kafkaRun()
 	default:
 		log.Fatalf("unknown appType: %v", e.Config.AppType)
+	}
+	e.stop(c)
+
+}
+
+func (e *Eb) stop(c chan os.Signal) {
+
+	for s := range c {
+
+		switch s {
+		case syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT:
+			logger.Info("exit signal: %s", s.String())
+			if e.stopFunc != nil {
+				e.stopFunc()
+			}
+			os.Exit(0)
+		default:
+			logger.Info("exit signal: %s", s.String())
+		}
+
 	}
 }
 

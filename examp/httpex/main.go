@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 func getExecutableDir() (string, error) {
@@ -40,7 +41,10 @@ func main() {
 	if err != nil {
 		log.Panicln(err.Error())
 	}
-
+	eb.SetStopFunc(func() {
+		time.Sleep(1 * 5 * time.Second)
+		log.Println("stop")
+	})
 	r.GET("/ping", func(context *gin.Context) {
 		value, exists := context.Get("EbaseRequestID")
 		if exists {
