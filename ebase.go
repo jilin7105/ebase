@@ -147,7 +147,6 @@ func (e *Eb) Run() {
 	default:
 		log.Fatalf("unknown appType: %v", e.Config.AppType)
 	}
-	e.stop(c)
 
 }
 
