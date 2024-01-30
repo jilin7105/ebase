@@ -9,6 +9,7 @@ import (
 	"github.com/go-co-op/gocron"
 	"github.com/go-redis/redis/v8"
 	"github.com/jilin7105/ebase/kafka"
+	jg "github.com/jinzhu/gorm"
 	"google.golang.org/grpc"
 	"gopkg.in/yaml.v2"
 	"gorm.io/gorm"
@@ -20,6 +21,15 @@ import (
 // GetDB 提供名字获取数据库连接
 func GetDB(name string) *gorm.DB {
 	db, ok := ebInstance.DBs[name]
+	if !ok {
+		return nil
+	}
+	return db
+}
+
+// GetAutoDB 提供名字获取数据库连接
+func GetAutoDB(name string) *jg.DB {
+	db, ok := ebInstance.AutoDBs[name]
 	if !ok {
 		return nil
 	}

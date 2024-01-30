@@ -36,6 +36,7 @@ type DbConfig struct {
 	Dbname       string `yaml:"dbname"`
 	MaxIdleConns int    `yaml:"maxIdleConns"`
 	MaxOpenConns int    `yaml:"maxOpenConns"`
+	Type         string `yaml:"type"`
 }
 
 type RedisConfig struct {

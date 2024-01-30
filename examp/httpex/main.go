@@ -1,14 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jilin7105/ebase"
 	_ "github.com/jilin7105/ebase"
 	"log"
 	"os"
 	"path/filepath"
-	"time"
 )
 
 func getExecutableDir() (string, error) {
@@ -42,14 +40,23 @@ func main() {
 		log.Panicln(err.Error())
 	}
 	eb.SetStopFunc(func() {
-		time.Sleep(1 * 5 * time.Second)
+		//time.Sleep(15 * time.Second)
 		log.Println("stop")
 	})
+	log.Println(eb.AutoDBs)
 	r.GET("/ping", func(context *gin.Context) {
-		value, exists := context.Get("EbaseRequestID")
-		if exists {
-			fmt.Println("requestID:", value)
+
+		db := ebase.GetAutoDB("test12")
+		if db == nil {
+			log.Panicln("1111")
+			return
 		}
+		type User struct {
+			UserId int
+		}
+		var users = []User{}
+		db.Table("").Select("user_id").Where("dt = ?", "20240129").First(&users)
+		log.Println(users)
 	})
 
 	eb.Run()

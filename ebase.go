@@ -14,6 +14,7 @@ import (
 	ebasegrpc "github.com/jilin7105/ebase/server/grpc"
 	ebasehttp "github.com/jilin7105/ebase/server/http"
 	"github.com/jilin7105/ebase/task"
+	jg "github.com/jinzhu/gorm"
 	"google.golang.org/grpc"
 	"gopkg.in/yaml.v2"
 	"gorm.io/gorm"
@@ -29,6 +30,7 @@ type Eb struct {
 	ConfigFileName string
 	Config         config.Config
 	DBs            map[string]*gorm.DB
+	AutoDBs        map[string]*jg.DB
 	Redis          map[string]*redis.Client
 	kafkaProducer  map[string]*sarama.SyncProducer
 	serviceTask    *gocron.Scheduler
@@ -45,6 +47,7 @@ type Eb struct {
 var ebInstance = &Eb{
 	cxt:           context.Background(),
 	DBs:           map[string]*gorm.DB{},
+	AutoDBs:       map[string]*jg.DB{},
 	Redis:         map[string]*redis.Client{},
 	kafkaProducer: map[string]*sarama.SyncProducer{},
 }

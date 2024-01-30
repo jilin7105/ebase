@@ -12,6 +12,15 @@ databases:
     dbname: test
     maxIdleConns: 10
     MaxOpenConns: 10
+
+  - name: test12
+    host: 127.0.0.1
+    port: 80
+    username: 2
+    password: 3
+    dbname: 1
+    type: pgsql
+
 redis:
   - name: test22
     host : 127.0.0.1

@@ -18,6 +18,7 @@ databases:
     dbname: test
     maxIdleConns: 10
     MaxOpenConns: 10
+    type : "mysql"  #数据库类型mysql pgsql
 
 redis:
   - name: test
@@ -40,6 +41,7 @@ kafkaProducers:
     retryBackoff: 100  # 两次重试之间的时间间隔，单位为毫秒
     returnSuccesses: false   # 是否返回成功发送的消息
     newManualPartitioner: false  #是否手动分配分区
+
 
 
 httpginServer:
