@@ -3,7 +3,8 @@ package ebase
 import (
 	"fmt"
 	"github.com/jilin7105/ebase/logger"
-	jg "github.com/jinzhu/gorm"
+	"gorm.io/driver/postgres"
+
 	_ "github.com/lib/pq"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -45,12 +46,12 @@ func (e *Eb) initMysql() {
 				dbConfig.Host,
 				dbConfig.Port,
 			)
-			db, err := jg.Open("postgres", dsn)
+			db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 			if err != nil {
 				logger.Error("Failed to connect to database %s: %v", dbConfig.Name, err)
 				continue
 			}
-			e.AutoDBs[dbConfig.Name] = db
+			e.DBs[dbConfig.Name] = db
 		}
 	}
 
