@@ -9,6 +9,7 @@ import (
 	"github.com/go-co-op/gocron"
 	"github.com/go-redis/redis/v8"
 	"github.com/jilin7105/ebase/kafka"
+	"github.com/jilin7105/ebase/logger"
 	"google.golang.org/grpc"
 	"gopkg.in/yaml.v2"
 	"gorm.io/gorm"
@@ -74,6 +75,7 @@ func (e *Eb) GetHttpServer() (*gin.Engine, error) {
 	return service, nil
 }
 
+//注册kafka 消费
 func (e *Eb) RegisterKafkaHandle(name string, handle sarama.ConsumerGroupHandler) {
 	if _, ok := e.kafkaConsumer[name]; ok {
 		e.kafkaConsumer[name].RegisterHandle(handle)
@@ -121,4 +123,15 @@ func (e *Eb) SelfLoadConfig(out interface{}) error {
 //写入退出回调信息
 func (e *Eb) SetStopFunc(f func()) {
 	e.stopFunc = f
+}
+
+func (e *Eb) EasyRegisterKafkaHandle(name string, options ...func(*kafka.ConsumerGroupHandler)) {
+	if _, ok := e.kafkaConsumer[name]; ok {
+		handle, err := kafka.NewConsumerHandler(options...)
+		if err != nil {
+			logger.Info("kafka handle init error name[%s]  err:%s", name, err.Error())
+			return
+		}
+		e.kafkaConsumer[name].RegisterHandle(handle)
+	}
 }

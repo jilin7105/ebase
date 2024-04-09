@@ -17,7 +17,7 @@ databases:
     password: root
     dbname: test
     maxIdleConns: 10
-    MaxOpenConns: 10
+    maxOpenConns: 10
     type : "mysql"  #数据库类型mysql pgsql
 
 redis:

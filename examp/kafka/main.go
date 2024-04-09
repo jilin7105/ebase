@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/Shopify/sarama"
 	"github.com/jilin7105/ebase"
+	"github.com/jilin7105/ebase/kafka"
 	"log"
 	"os"
 )
@@ -21,11 +22,18 @@ func (h consumerGroupHandler) Cleanup(sarama.ConsumerGroupSession) error { retur
 func (h consumerGroupHandler) ConsumeClaim(sess sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim) error {
 	for msg := range claim.Messages() {
 		log.Printf("从主题 %s 收到消息: %s\n", msg.Topic, string(msg.Value))
-		// 在这里处理你的消息
-		// 标记消息已处理
 
 		sess.MarkMessage(msg, "")
 	}
+	return nil
+}
+
+func Action(msg *sarama.ConsumerMessage) error {
+	log.Printf("从主题 %s 收到消息: %s\n", msg.Topic, string(msg.Value))
+	return nil
+}
+
+func setup() error {
 	return nil
 }
 
@@ -36,7 +44,10 @@ func main() {
 	ebase.SetProjectPath(path)
 	ebase.Init()
 	eb := ebase.GetEbInstance()
-	eb.RegisterKafkaHandle("Consumer1", consumerGroupHandler{})
-	eb.RegisterKafkaHandle("Consumer2", consumerGroupHandler{})
+	//eb.RegisterKafkaHandle("ab_test", consumerGroupHandler{})
+
+	eb.EasyRegisterKafkaHandle("ab_test", kafka.SetActionMessages(Action), kafka.SetSetup(setup))
+
 	eb.Run()
+	select {}
 }

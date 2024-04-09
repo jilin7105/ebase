@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/jilin7105/ebase/config"
 	"github.com/jilin7105/ebase/logger"
+	"log"
 	"time"
 
 	"github.com/Shopify/sarama"
@@ -69,6 +70,7 @@ func (kc *KafkaConsumer) Consume(ctx context.Context) error {
 			}
 			// 检查是否取消了上下文，这表示消费者应该停止
 			if ctx.Err() != nil {
+				log.Println("这表示消费者应该停止")
 				return
 			}
 		}
