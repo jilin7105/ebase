@@ -3,11 +3,12 @@ package ebase
 import (
 	"github.com/Shopify/sarama"
 	"github.com/jilin7105/ebase/config"
+	"github.com/jilin7105/ebase/kafka/ProducerAbout"
 	"github.com/jilin7105/ebase/logger"
 	"time"
 )
 
-func newKafkaProducer(config config.KafkaProducerConfig) (*sarama.SyncProducer, error) {
+func newKafkaProducer(config config.KafkaProducerConfig) (*ProducerAbout.KafkaProducer, error) {
 	saramaConfig := sarama.NewConfig()
 	saramaConfig.Producer.Return.Successes = true
 	// 设置默认值
@@ -62,8 +63,11 @@ func newKafkaProducer(config config.KafkaProducerConfig) (*sarama.SyncProducer, 
 		saramaConfig.Producer.Partitioner = sarama.NewManualPartitioner
 	}
 	producer, err := sarama.NewSyncProducer(config.Brokers, saramaConfig)
-
-	return &producer, err
+	var kp = ProducerAbout.KafkaProducer{
+		Sp:    &producer,
+		Topic: config.Topic,
+	}
+	return &kp, err
 
 }
 

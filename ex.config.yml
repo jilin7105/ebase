@@ -51,7 +51,7 @@ httpginServer:
 
 grpcServer:
   port: 8080  #服务端口
-  traceTracking : true #是否开启链路追踪
+
 
 
 kafkaConsumers:
@@ -73,4 +73,7 @@ kafkaConsumers:
     sessionTimeout: 10000  # 消费者组会话的超时时间（毫秒）
     heartbeatInterval: 3000  # 心跳间隔时间（毫秒）
 
+linkTracking:
+  is_open: true  #是否开启链路追踪
+  kafka_producer_name: linkTrackingKafka #对应推送 kafka 地址
 

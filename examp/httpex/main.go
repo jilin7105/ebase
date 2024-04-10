@@ -43,20 +43,11 @@ func main() {
 		//time.Sleep(15 * time.Second)
 		log.Println("stop")
 	})
-	log.Println(eb.AutoDBs)
 	r.GET("/ping", func(context *gin.Context) {
 
-		db := ebase.GetAutoDB("test12")
-		if db == nil {
-			log.Panicln("1111")
-			return
-		}
-		type User struct {
-			UserId int
-		}
-		var users = []User{}
-		db.Table("").Select("user_id").Where("dt = ?", "20240129").First(&users)
-		log.Println(users)
+		context.JSON(200, gin.H{
+			"message": "pong",
+		})
 	})
 
 	eb.Run()

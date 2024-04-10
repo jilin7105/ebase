@@ -23,6 +23,12 @@ type Config struct {
 		IsHeartPush    bool  `yaml:"is_heart_push"`    //  is_heart_push : true  #是否心跳推送
 		HeartPushSpeed int64 `yaml:"heart_push_speed"` //  is_reg : true  #是否有服务注册
 	} `yaml:"micro"` //micro :
+	LinkTrack LinkTracking `yaml:"linkTracking"`
+}
+
+type LinkTracking struct {
+	IsOpen            bool   `yaml:"is_open"`             //is_open 是否开启链路追踪
+	KafkaProducerName string `yaml:"kafka_producer_name"` //kafka 生产者名称
 }
 
 //  heart_push_speed : 5  #心跳推送速度 单位 秒

@@ -4,12 +4,12 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/Shopify/sarama"
 	"github.com/gin-gonic/gin"
 	"github.com/go-co-op/gocron"
 	"github.com/go-redis/redis/v8"
 	"github.com/jilin7105/ebase/config"
-	"github.com/jilin7105/ebase/kafka"
+	"github.com/jilin7105/ebase/kafka/ConsumerAbout"
+	"github.com/jilin7105/ebase/kafka/ProducerAbout"
 	"github.com/jilin7105/ebase/logger"
 	ebasegrpc "github.com/jilin7105/ebase/server/grpc"
 	ebasehttp "github.com/jilin7105/ebase/server/http"
@@ -30,11 +30,11 @@ type Eb struct {
 	Config         config.Config
 	DBs            map[string]*gorm.DB
 	Redis          map[string]*redis.Client
-	kafkaProducer  map[string]*sarama.SyncProducer
+	kafkaProducer  map[string]*ProducerAbout.KafkaProducer
 	serviceTask    *gocron.Scheduler
 	serciceHttp    *gin.Engine
 	projectPath    string
-	kafkaConsumer  map[string]*kafka.KafkaConsumer
+	kafkaConsumer  map[string]*ConsumerAbout.KafkaConsumer
 	grpcServer     *grpc.Server
 	regfunc        func() error
 	heartbeatPush  func() error
@@ -46,7 +46,7 @@ var ebInstance = &Eb{
 	cxt:           context.Background(),
 	DBs:           map[string]*gorm.DB{},
 	Redis:         map[string]*redis.Client{},
-	kafkaProducer: map[string]*sarama.SyncProducer{},
+	kafkaProducer: map[string]*ProducerAbout.KafkaProducer{},
 }
 
 func SetProjectPath(path string) {
@@ -78,7 +78,10 @@ func Init() {
 	ebInstance.initServer()
 
 	//开启心跳检测，服务注册
-	ebInstance.Initmicro()
+	ebInstance.initmicro()
+
+	//链路追踪
+	ebInstance.initLinkTracking()
 }
 
 func (e *Eb) initServer() {
@@ -96,7 +99,7 @@ func (e *Eb) initServer() {
 		// 创建任务服务
 	case "Kafka":
 		var err error
-		e.kafkaConsumer, err = kafka.NewKafkaConsumers(e.Config)
+		e.kafkaConsumer, err = ConsumerAbout.NewKafkaConsumers(e.Config)
 		if err != nil {
 			logger.Error("kafka 初始化失败", err)
 		}

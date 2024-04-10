@@ -8,7 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-co-op/gocron"
 	"github.com/go-redis/redis/v8"
-	"github.com/jilin7105/ebase/kafka"
+	"github.com/jilin7105/ebase/kafka/ConsumerAbout"
+	"github.com/jilin7105/ebase/kafka/ProducerAbout"
 	"github.com/jilin7105/ebase/logger"
 	"google.golang.org/grpc"
 	"gopkg.in/yaml.v2"
@@ -37,7 +38,7 @@ func GetRedis(name string) *redis.Client {
 }
 
 //GetKafka 获取Kafka生产者
-func GetKafka(name string) *sarama.SyncProducer {
+func GetKafka(name string) *ProducerAbout.KafkaProducer {
 	client, ok := ebInstance.kafkaProducer[name]
 	if !ok {
 		return nil
@@ -85,7 +86,7 @@ func (e *Eb) RegisterKafkaHandle(name string, handle sarama.ConsumerGroupHandler
 //启动kafka 消费
 func (e *Eb) kafkaRun() {
 	for _, consumer := range e.kafkaConsumer {
-		go func(consumer *kafka.KafkaConsumer, ctx context.Context) {
+		go func(consumer *ConsumerAbout.KafkaConsumer, ctx context.Context) {
 			log.Printf("Starting Kafka consumer: %s", consumer.Name)
 			if err := consumer.Consume(ctx); err != nil {
 				log.Printf("Error consuming from Kafka (consumer: %s): %v", consumer.Name, err)
@@ -125,9 +126,9 @@ func (e *Eb) SetStopFunc(f func()) {
 	e.stopFunc = f
 }
 
-func (e *Eb) EasyRegisterKafkaHandle(name string, options ...func(*kafka.ConsumerGroupHandler)) {
+func (e *Eb) EasyRegisterKafkaHandle(name string, options ...func(*ConsumerAbout.ConsumerGroupHandler)) {
 	if _, ok := e.kafkaConsumer[name]; ok {
-		handle, err := kafka.NewConsumerHandler(options...)
+		handle, err := ConsumerAbout.NewConsumerHandler(options...)
 		if err != nil {
 			logger.Info("kafka handle init error name[%s]  err:%s", name, err.Error())
 			return

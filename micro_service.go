@@ -19,7 +19,7 @@ func SetRegfunc(f func() error) {
 	ebInstance.regfunc = f
 }
 
-func (e *Eb) Initmicro() {
+func (e *Eb) initmicro() {
 	if e.Config.Micro.IsReg {
 		if e.regfunc == nil {
 			panic("未找到 regfunc 方法 \n" +

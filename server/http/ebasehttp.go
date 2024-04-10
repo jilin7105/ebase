@@ -1,11 +1,12 @@
 package ebasehttp
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/jilin7105/ebase/config"
+	"github.com/jilin7105/ebase/logger"
 	"github.com/jilin7105/ebase/server/ipLimiter"
+	"github.com/jilin7105/ebase/util/LinkTracking"
 	"net"
 	"net/http"
 	"net/http/pprof"
@@ -26,23 +27,36 @@ func InitHttp(config config.Config) *gin.Engine {
 
 	//增加接口请求日志，增加requestID
 	r.Use(func(c *gin.Context) {
-		// Generate a unique ID for this request
 		requestID := uuid.New().String()
+		if c.GetHeader("EbaseRequestID") == "" {
 
-		// Add the request ID to the context
+			c.Header("EbaseRequestID", requestID)
+		} else {
+			requestID = c.GetHeader("EbaseRequestID")
+		}
+
 		c.Set("EbaseRequestID", requestID)
-
+		Span := c.Request.URL
 		// Start timer
 		startTime := time.Now()
 
 		// Process request
 		c.Next()
 
-		// Calculate request time
 		elapsedTime := time.Since(startTime)
-		fmt.Sprintf("Request ID: %s, Path: %s, Time: %v", requestID, c.Request.URL.Path, elapsedTime)
+
+		data, err := LinkTracking.NewLinkTrackLogData(
+			LinkTracking.LinkTrackID(requestID),
+			LinkTracking.LinkTrackTime(time.Now().Format("2006-01-02 15:04:05")),
+			LinkTracking.LinkTrackActionTime(elapsedTime.String()),
+			LinkTracking.LinkTrackSpan(Span.String()),
+		)
+		if err != nil {
+			logger.Error("LinkTracking error: %v", err)
+		}
+		data.Send()
 		// Log request details
-		//logger.Info("Request ID: %s, Path: %s, Time: %v", requestID, c.Request.URL.Path, elapsedTime)
+		logger.Info("Request ID: %s, Path: %s, Time: %v", requestID, c.Request.URL.Path, elapsedTime)
 	})
 
 	if config.HttpGin.AppendPprof {
