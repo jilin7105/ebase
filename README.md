@@ -78,19 +78,8 @@ kp := *ebase.GetKafka("Producer_name")
 if kp == nil {
     panic("KafkaProducer 不存在")
 }
-topic := "your topic"
 
-msg := &sarama.ProducerMessage{
-    Topic: "your topic",
-	//newManualPartitioner: true  #是否手动分配分区
-	//如果手动分区选择true ，需要手动设置分区 增加如下代码
-	//Partition: int32(your_partition_number),  // 设置分区号
-    Value: sarama.StringEncoder("Hello World"),
-}
-
-
-
-partition, offset, err := kp.SendMessage(msg)
+partition, offset, err := kp.Send(msg)
 if err != nil {
     log.Fatalln("Failed to send message:", err)
 }
