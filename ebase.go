@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/gin-gonic/gin"
 	"github.com/go-co-op/gocron"
 	"github.com/go-redis/redis/v8"
@@ -29,6 +30,7 @@ type Eb struct {
 	ConfigFileName string
 	Config         config.Config
 	DBs            map[string]*gorm.DB
+	ES             map[string]*elasticsearch.Client
 	Redis          map[string]*redis.Client
 	kafkaProducer  map[string]*ProducerAbout.KafkaProducer
 	serviceTask    *gocron.Scheduler

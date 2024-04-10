@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Shopify/sarama"
+	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/gin-gonic/gin"
 	"github.com/go-co-op/gocron"
 	"github.com/go-redis/redis/v8"
@@ -44,6 +45,15 @@ func GetKafka(name string) *ProducerAbout.KafkaProducer {
 		return nil
 	}
 	return client
+}
+
+//GetEs 获取ES客户端
+func GetEs(name string) (*elasticsearch.Client, error) {
+	client, ok := ebInstance.ES[name]
+	if !ok {
+		return nil, errors.New("未初始化ES客户端，请检测服务类型 ")
+	}
+	return client, nil
 }
 
 func (e *Eb) GetTaskServer() (*gocron.Scheduler, error) {

@@ -5,6 +5,7 @@ type Config struct {
 	LogLevel       int                    `yaml:"logLevel"`
 	LogFile        string                 `yaml:"logFile"`
 	Databases      []DbConfig             `yaml:"databases"`
+	Es             []EsConfig             `yaml:"es"`
 	Redis          []RedisConfig          `yaml:"redis"`
 	KafkaProducers []KafkaProducerConfig  `yaml:"kafkaProducers"`
 	ServicesName   string                 `yaml:"servies_name"`
@@ -78,4 +79,15 @@ type KafkaProducerConfig struct {
 	RetryBackoff         int      `yaml:"retryBackoff"`
 	ReturnSuccesses      bool     `yaml:"returnSuccesses"`
 	NewManualPartitioner bool     `yaml:"newManualPartitioner"`
+}
+
+//es 配置信息
+type EsConfig struct {
+	Hosts   []string `yaml:"hosts"`
+	User    string   `yaml:"user"`
+	Pass    string   `yaml:"pass"`
+	CloudId string   `yaml:"cloudId"`
+	ApiKey  string   `yaml:"apiKey"`
+	Type    string   `yaml:"type"`
+	Name    string   `yaml:"name"`
 }
