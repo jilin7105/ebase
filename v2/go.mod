@@ -1,4 +1,4 @@
-module github.com/jilin7105/ebase
+module github.com/jilin7105/ebase/v2
 
 go 1.20
 
