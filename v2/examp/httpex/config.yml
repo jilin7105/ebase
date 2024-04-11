@@ -16,6 +16,15 @@ httpginServer:
   port: 9999  #服务端口
   appendPprof : true #是否在路由中添加 pprof 路由
 
+es:
+  - name: "es1"
+    hosts: ["http://172.16.20.14:9200"] # ES集群的地址列表
+    user: "elastic"
+    pass: "k__rzue5xo6EYLB3g5f8"
+    cloudid: ""
+    apiKey: ""
+    type: "host"  # 类型默认 host  使用用户名密码登录  cloud 使用 cloudid+apiKey 登录
+
 
 kafkaProducers:
   - name: linkTrackingKafka
@@ -33,7 +42,7 @@ kafkaProducers:
 
 
 linkTracking:
-  is_open: true  #是否开启链路追踪
+  is_open: false  #是否开启链路追踪
   kafka_producer_name: linkTrackingKafka #对应推送 kafka 地址
   
 auto: 123344

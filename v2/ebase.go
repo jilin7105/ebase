@@ -15,6 +15,7 @@ import (
 	ebasegrpc "github.com/jilin7105/ebase/server/grpc"
 	ebasehttp "github.com/jilin7105/ebase/server/http"
 	"github.com/jilin7105/ebase/task"
+	"go.mongodb.org/mongo-driver/mongo"
 	"google.golang.org/grpc"
 	"gopkg.in/yaml.v2"
 	"gorm.io/gorm"
@@ -30,9 +31,10 @@ type Eb struct {
 	ConfigFileName string
 	Config         config.Config
 	DBs            map[string]*gorm.DB
-	Redis          map[string]*redis.Client
 	ES             map[string]*elasticsearch.Client
+	Redis          map[string]*redis.Client
 	kafkaProducer  map[string]*ProducerAbout.KafkaProducer
+	Mongo          map[string]*mongo.Client
 	serviceTask    *gocron.Scheduler
 	serciceHttp    *gin.Engine
 	projectPath    string
@@ -47,9 +49,11 @@ type Eb struct {
 var ebInstance = &Eb{
 	cxt:           context.Background(),
 	DBs:           map[string]*gorm.DB{},
-	Redis:         map[string]*redis.Client{},
 	ES:            map[string]*elasticsearch.Client{},
+	Redis:         map[string]*redis.Client{},
+	Mongo:         map[string]*mongo.Client{},
 	kafkaProducer: map[string]*ProducerAbout.KafkaProducer{},
+	kafkaConsumer: map[string]*ConsumerAbout.KafkaConsumer{},
 }
 
 func SetProjectPath(path string) {
@@ -89,6 +93,8 @@ func Init() {
 	//es 初始化
 	ebInstance.inites()
 
+	//mongo 初始化
+	ebInstance.initMongo()
 }
 
 func (e *Eb) initServer() {

@@ -42,6 +42,23 @@ kafkaProducers:
     returnSuccesses: false   # 是否返回成功发送的消息
     newManualPartitioner: false  #是否手动分配分区
 
+es:
+  - name: "es1"
+    hosts: ["http://127.0.0.1:9200"] # ES集群的地址列表  携带协议 http|https://host:port
+    user: ""
+    pass: ""
+    cloudid: "cloudId"
+    apiKey: "apiKey"
+    type: "host"  # 类型默认 host  使用用户名密码登录  cloud 使用 cloudid+apiKey 登录
+
+mongoConfig :
+  - name: "es1"
+    host: "127.0.0.1"  # ES集群的地址列表
+    port: "9200"  # ES集群的地址列表
+    username: ""
+    password: ""
+    dbname: "dbname"
+
 
 
 httpginServer:
@@ -63,15 +80,7 @@ kafkaConsumers:
     maxWaitTime: 500  # 从Kafka获取记录的最大等待时间（毫秒）
     sessionTimeout: 10000  # 消费者组会话的超时时间（毫秒）
     heartbeatInterval: 3000  # 心跳间隔时间（毫秒）
-    
-  - name: "Consumer2"
-    brokers: ["broker3:9092", "broker4:9092"]
-    topics: ["my-topic-3"]
-    groupID: "my-group-2"
-    autoOffsetReset: "earliest"  # 开始消费的位置，可能的值包括'earliest'、'latest'、'none'
-    maxWaitTime: 500  # 从Kafka获取记录的最大等待时间（毫秒）
-    sessionTimeout: 10000  # 消费者组会话的超时时间（毫秒）
-    heartbeatInterval: 3000  # 心跳间隔时间（毫秒）
+
 
 linkTracking:
   is_open: true  #是否开启链路追踪

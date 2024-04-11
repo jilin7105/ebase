@@ -14,8 +14,6 @@
 
 ```bash
 go get github.com/jilin7105/ebase
-//如果需要使用 mongodb  使用  
-go get github.com/jilin7105/ebase/v2
 ```
 
 给eb传入当前工作目录， 由于各种原因， 防止ebase获取不到工作目录，或者获取不准确
@@ -80,8 +78,19 @@ kp := *ebase.GetKafka("Producer_name")
 if kp == nil {
     panic("KafkaProducer 不存在")
 }
+topic := "your topic"
 
-partition, offset, err := kp.Send(msg)
+msg := &sarama.ProducerMessage{
+    Topic: "your topic",
+	//newManualPartitioner: true  #是否手动分配分区
+	//如果手动分区选择true ，需要手动设置分区 增加如下代码
+	//Partition: int32(your_partition_number),  // 设置分区号
+    Value: sarama.StringEncoder("Hello World"),
+}
+
+
+
+partition, offset, err := kp.SendMessage(msg)
 if err != nil {
     log.Fatalln("Failed to send message:", err)
 }
@@ -89,36 +98,6 @@ if err != nil {
 log.Printf("Message is stored in topic(%s)/partition(%d)/offset(%d)\n", topic, partition, offset)
 
 ```
-es 的简单使用
-```go
-import (
-    //"github.com/elastic/go-elasticsearch/v7"
-	"github.com/jilin7105/ebase"
-)
-
-esClient := ebase.GetEs("name")
-//*elasticsearch.Client 类型
-if esClient == nil {
-    panic("Es 客户端不存在")
-}
-
-```
-
-mongo 的简单使用 需要 v2 版本 go 1.20版本    v1 版本为 go 1.16版本  
-```go
-import (
-    //"go.mongodb.org/mongo-driver/mongo"
-	"github.com/jilin7105/ebase/v2"
-)
-
-mongoClient := ebase.GetMongo("name")
-//*mongo.Client 类型
-if mongoClient == nil {
-    panic("mongo 客户端不存在")
-}
-
-```
-
 
 ### 微服务
 ```yaml

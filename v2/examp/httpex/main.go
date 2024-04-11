@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jilin7105/ebase"
 	_ "github.com/jilin7105/ebase"
+	"github.com/jilin7105/ebase/logger"
 	"log"
 	"os"
 	"path/filepath"
@@ -24,7 +25,7 @@ type Myconfig struct {
 	Auto string `json:"auto"`
 }
 
-//使用go run main.go  启动测试服务
+// 使用go run main.go  启动测试服务
 func main() {
 	path, _ := os.Getwd()
 
@@ -45,10 +46,21 @@ func main() {
 	})
 	r.GET("/ping", func(context *gin.Context) {
 
+		esdb := ebase.GetEs("es1")
+		if esdb == nil {
+			logger.Info("esdb is nil")
+		} else {
+			info, err := esdb.Info()
+			if err != nil {
+				logger.Info("esdb.Info() err:%v", err)
+			}
+
+			logger.Info("esdb.Info() :%v", info)
+		}
+
 		context.JSON(200, gin.H{
 			"message": "pong",
 		})
 	})
-
 	eb.Run()
 }
