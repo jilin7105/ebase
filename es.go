@@ -6,7 +6,7 @@ import (
 	"github.com/jilin7105/ebase/logger"
 )
 
-func newes(config config.EsConfig) (*elasticsearch.Client, error) {
+func newEs(config config.EsConfig) (*elasticsearch.Client, error) {
 	cfg := elasticsearch.Config{}
 	if config.Type == "host" {
 		cfg = elasticsearch.Config{
@@ -31,12 +31,12 @@ func newes(config config.EsConfig) (*elasticsearch.Client, error) {
 
 }
 
-func (e *Eb) Inites() {
+func (e *Eb) inites() {
 
 	for _, config := range e.Config.Es {
-		esclient, err := newes(config)
+		esclient, err := newEs(config)
 		if err != nil {
-			logger.Error("es  初始化失败 %s %s", config.Name, err.Error())
+			logger.Info("es  初始化失败 %s %s", config.Name, err.Error())
 		}
 		e.ES[config.Name] = esclient
 	}

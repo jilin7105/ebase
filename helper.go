@@ -12,6 +12,7 @@ import (
 	"github.com/jilin7105/ebase/kafka/ConsumerAbout"
 	"github.com/jilin7105/ebase/kafka/ProducerAbout"
 	"github.com/jilin7105/ebase/logger"
+	"go.mongodb.org/mongo-driver/mongo"
 	"google.golang.org/grpc"
 	"gopkg.in/yaml.v2"
 	"gorm.io/gorm"
@@ -38,7 +39,7 @@ func GetRedis(name string) *redis.Client {
 	return client
 }
 
-//GetKafka 获取Kafka生产者
+// GetKafka 获取Kafka生产者
 func GetKafka(name string) *ProducerAbout.KafkaProducer {
 	client, ok := ebInstance.kafkaProducer[name]
 	if !ok {
@@ -47,13 +48,22 @@ func GetKafka(name string) *ProducerAbout.KafkaProducer {
 	return client
 }
 
-//GetEs 获取ES客户端
-func GetEs(name string) (*elasticsearch.Client, error) {
+// GetEs 获取ES客户端
+func GetEs(name string) *elasticsearch.Client {
 	client, ok := ebInstance.ES[name]
 	if !ok {
-		return nil, errors.New("未初始化ES客户端，请检测服务类型 ")
+		return nil
 	}
-	return client, nil
+	return client
+}
+
+// GetMongo 获取Mongo客户端
+func GetMongo(name string) *mongo.Client {
+	client, ok := ebInstance.Mongo[name]
+	if !ok {
+		return nil
+	}
+	return client
 }
 
 func (e *Eb) GetTaskServer() (*gocron.Scheduler, error) {
@@ -86,14 +96,14 @@ func (e *Eb) GetHttpServer() (*gin.Engine, error) {
 	return service, nil
 }
 
-//注册kafka 消费
+// 注册kafka 消费
 func (e *Eb) RegisterKafkaHandle(name string, handle sarama.ConsumerGroupHandler) {
 	if _, ok := e.kafkaConsumer[name]; ok {
 		e.kafkaConsumer[name].RegisterHandle(handle)
 	}
 }
 
-//启动kafka 消费
+// 启动kafka 消费
 func (e *Eb) kafkaRun() {
 	for _, consumer := range e.kafkaConsumer {
 		go func(consumer *ConsumerAbout.KafkaConsumer, ctx context.Context) {
@@ -105,7 +115,7 @@ func (e *Eb) kafkaRun() {
 	}
 }
 
-//启动kafka 消费
+// 启动kafka 消费
 func (e *Eb) grpcRun() {
 	port := e.Config.GrpcServer.Port
 	ln, err := net.Listen("tcp", fmt.Sprintf(":%v", port))
@@ -115,7 +125,7 @@ func (e *Eb) grpcRun() {
 	e.grpcServer.Serve(ln)
 }
 
-//自动加载配置文件
+// 自动加载配置文件
 func (e *Eb) SelfLoadConfig(out interface{}) error {
 	data, err := ioutil.ReadFile(e.projectPath + "/" + e.ConfigFileName)
 	if err != nil {
@@ -131,7 +141,7 @@ func (e *Eb) SelfLoadConfig(out interface{}) error {
 	return err
 }
 
-//写入退出回调信息
+// 写入退出回调信息
 func (e *Eb) SetStopFunc(f func()) {
 	e.stopFunc = f
 }

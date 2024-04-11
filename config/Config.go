@@ -5,6 +5,7 @@ type Config struct {
 	LogLevel       int                    `yaml:"logLevel"`
 	LogFile        string                 `yaml:"logFile"`
 	Databases      []DbConfig             `yaml:"databases"`
+	Mongo          []MongoConfig          `yaml:"mongoConfig"`
 	Es             []EsConfig             `yaml:"es"`
 	Redis          []RedisConfig          `yaml:"redis"`
 	KafkaProducers []KafkaProducerConfig  `yaml:"kafkaProducers"`
@@ -81,7 +82,7 @@ type KafkaProducerConfig struct {
 	NewManualPartitioner bool     `yaml:"newManualPartitioner"`
 }
 
-//es 配置信息
+// es 配置信息
 type EsConfig struct {
 	Hosts   []string `yaml:"hosts"`
 	User    string   `yaml:"user"`
@@ -90,4 +91,13 @@ type EsConfig struct {
 	ApiKey  string   `yaml:"apiKey"`
 	Type    string   `yaml:"type"`
 	Name    string   `yaml:"name"`
+}
+
+type MongoConfig struct {
+	Host     string `yaml:"host"`
+	Port     int    `yaml:"port"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
+	Dbname   string `yaml:"dbname"`
+	Name     string `yaml:"name"`
 }
