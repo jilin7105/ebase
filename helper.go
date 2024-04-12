@@ -5,7 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Shopify/sarama"
-	"github.com/elastic/go-elasticsearch/v8"
+	esv7 "github.com/elastic/go-elasticsearch/v7"
+	esv8 "github.com/elastic/go-elasticsearch/v8"
 	"github.com/gin-gonic/gin"
 	"github.com/go-co-op/gocron"
 	"github.com/go-redis/redis/v8"
@@ -49,12 +50,21 @@ func GetKafka(name string) *ProducerAbout.KafkaProducer {
 }
 
 // GetEs 获取ES客户端
-func GetEs(name string) *elasticsearch.Client {
+func GetEsV7(name string) *esv7.Client {
 	client, ok := ebInstance.ES[name]
 	if !ok {
 		return nil
 	}
-	return client
+	return client.esv7
+}
+
+// GetEs 获取ES客户端
+func GetEsV8(name string) *esv8.Client {
+	client, ok := ebInstance.ES[name]
+	if !ok {
+		return nil
+	}
+	return client.esv8
 }
 
 // GetMongo 获取Mongo客户端

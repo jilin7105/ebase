@@ -50,6 +50,7 @@ es:
     cloudid: "cloudId"
     apiKey: "apiKey"
     type: "host"  # 类型默认 host  使用用户名密码登录  cloud 使用 cloudid+apiKey 登录
+    version: "v8" #v8 v7  根据 es 版本填写
 
 mongoConfig :
   - name: "es1"

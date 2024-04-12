@@ -1,33 +1,63 @@
 package ebase
 
 import (
-	"github.com/elastic/go-elasticsearch/v8"
+	esv7 "github.com/elastic/go-elasticsearch/v7"
+	esv8 "github.com/elastic/go-elasticsearch/v8"
 	"github.com/jilin7105/ebase/config"
 	"github.com/jilin7105/ebase/logger"
 )
 
-func newEs(config config.EsConfig) (*elasticsearch.Client, error) {
-	cfg := elasticsearch.Config{}
+type EsEbase struct {
+	esv7    *esv7.Client
+	esv8    *esv8.Client
+	Version string
+}
+
+func newEs(config config.EsConfig) (EsEbase, error) {
+	var es = EsEbase{
+		Version: config.Version,
+	}
+	cfgv8 := esv8.Config{}
+	cfgv7 := esv7.Config{}
+
 	if config.Type == "host" {
-		cfg = elasticsearch.Config{
+
+		cfgv7 = esv7.Config{
+			Addresses: config.Hosts,
+		}
+		cfgv8 = esv8.Config{
 			Addresses: config.Hosts,
 		}
 		if config.User != "" {
-			cfg.Username = config.User
+			cfgv8.Username = config.User
+			cfgv7.Username = config.User
 
 		}
 
 		if config.Pass != "" {
-			cfg.Password = config.Pass
+			cfgv8.Password = config.Pass
+			cfgv7.Password = config.Pass
 		}
 	}
 
 	if config.Type == "cloud" {
-		cfg.CloudID = config.CloudId
-		cfg.APIKey = config.ApiKey
+		cfgv8.CloudID = config.CloudId
+		cfgv7.CloudID = config.CloudId
+		cfgv8.APIKey = config.ApiKey
+		cfgv7.APIKey = config.ApiKey
 	}
 
-	return elasticsearch.NewClient(cfg)
+	var err error
+	if config.Version == "v8" {
+		es.esv8, err = esv8.NewClient(cfgv8)
+
+	}
+
+	if config.Version == "v7" {
+		es.esv7, err = esv7.NewClient(cfgv7)
+	}
+
+	return es, err
 
 }
 

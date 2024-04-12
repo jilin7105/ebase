@@ -91,6 +91,7 @@ type EsConfig struct {
 	ApiKey  string   `yaml:"apiKey"`
 	Type    string   `yaml:"type"`
 	Name    string   `yaml:"name"`
+	Version string   `yaml:"version"`
 }
 
 type MongoConfig struct {

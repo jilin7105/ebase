@@ -4,7 +4,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/elastic/go-elasticsearch/v8"
 	"github.com/gin-gonic/gin"
 	"github.com/go-co-op/gocron"
 	"github.com/go-redis/redis/v8"
@@ -31,7 +30,7 @@ type Eb struct {
 	ConfigFileName string
 	Config         config.Config
 	DBs            map[string]*gorm.DB
-	ES             map[string]*elasticsearch.Client
+	ES             map[string]EsEbase
 	Redis          map[string]*redis.Client
 	kafkaProducer  map[string]*ProducerAbout.KafkaProducer
 	Mongo          map[string]*mongo.Client
@@ -49,7 +48,7 @@ type Eb struct {
 var ebInstance = &Eb{
 	cxt:           context.Background(),
 	DBs:           map[string]*gorm.DB{},
-	ES:            map[string]*elasticsearch.Client{},
+	ES:            map[string]EsEbase{},
 	Redis:         map[string]*redis.Client{},
 	Mongo:         map[string]*mongo.Client{},
 	kafkaProducer: map[string]*ProducerAbout.KafkaProducer{},
