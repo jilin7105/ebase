@@ -2,8 +2,8 @@ package ebasehttp
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"github.com/jilin7105/ebase/config"
+	"github.com/jilin7105/ebase/helpfunc"
 	"github.com/jilin7105/ebase/logger"
 	"github.com/jilin7105/ebase/server/ipLimiter"
 	"github.com/jilin7105/ebase/util/LinkTracking"
@@ -27,7 +27,7 @@ func InitHttp(config config.Config) *gin.Engine {
 
 	//增加接口请求日志，增加requestID
 	r.Use(func(c *gin.Context) {
-		requestID := uuid.New().String()
+		requestID := helpfunc.CreateRequestId()
 		if c.GetHeader("EbaseRequestID") == "" {
 
 			c.Header("EbaseRequestID", requestID)

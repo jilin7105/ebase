@@ -2,8 +2,8 @@ package grpc
 
 import (
 	"context"
-	"github.com/google/uuid"
 	"github.com/jilin7105/ebase/config"
+	"github.com/jilin7105/ebase/helpfunc"
 	"github.com/jilin7105/ebase/logger"
 	"github.com/jilin7105/ebase/util/LinkTracking"
 	"google.golang.org/grpc"
@@ -18,16 +18,15 @@ func InitRpcService(config config.Config) *grpc.Server {
 		//链式调用
 		grpc.ChainUnaryInterceptor(
 			func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
-
+				// Start timer
+				startTime := time.Now()
 				requestID := getMataid(ctx)
 				if requestID == "" {
-					requestID = uuid.New().String()
+					requestID = helpfunc.CreateRequestId()
 				}
 				ctx = context.WithValue(ctx, "EbaseRequestID", requestID)
 
 				Span := info.FullMethod
-				// Start timer
-				startTime := time.Now()
 
 				resp, err = handler(ctx, req)
 
@@ -53,7 +52,7 @@ func InitRpcService(config config.Config) *grpc.Server {
 	return s
 }
 
-//获取头id
+// 获取头id
 func getMataid(ctx context.Context) string {
 	md, _ := metadata.FromIncomingContext(ctx)
 	EbaseRequestId := md.Get("EbaseRequestID")
