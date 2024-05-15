@@ -4,7 +4,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jilin7105/ebase"
 	_ "github.com/jilin7105/ebase"
+	"github.com/jilin7105/ebase/helpfunc/EBHttpRequest"
 	"github.com/jilin7105/ebase/logger"
+	"github.com/levigross/grequests"
 	"log"
 	"os"
 	"path/filepath"
@@ -45,19 +47,32 @@ func main() {
 		log.Println("stop")
 	})
 	r.GET("/ping", func(context *gin.Context) {
+		EBHttpRequest.Get(context, "http://127.0.0.1:9999/f", nil)
+		context.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
+	r.GET("/f", func(context *gin.Context) {
+		EBHttpRequest.Post(context, "http://127.0.0.1:9999/p", &grequests.RequestOptions{
+			JSON: map[string]string{
+				"name": "jilin",
+			},
+		})
+		context.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
 
-		esdb := ebase.GetEs("es1")
-		if esdb == nil {
-			logger.Info("esdb is nil")
-		} else {
-			info, err := esdb.Info()
-			if err != nil {
-				logger.Info("esdb.Info() err:%v", err)
-			}
-
-			logger.Info("esdb.Info() :%v", info)
+	r.POST("/p", func(context *gin.Context) {
+		//获取并打印 json 数据
+		var a = map[string]string{}
+		err := context.BindJSON(&a)
+		if err != nil {
+			logger.Info("%s", err.Error())
+			return
 		}
 
+		logger.Info("%++v", a)
 		context.JSON(200, gin.H{
 			"message": "pong",
 		})

@@ -129,6 +129,30 @@ micro : # 微服务相关配置  （非必须）
 	})
 ```
 
+### 内置简单 http 请求服务 配合链路追踪 
+```go
+import (
+
+"github.com/jilin7105/ebase/helpfunc/EBHttpRequest"
+
+"github.com/levigross/grequests"
+
+)
+
+// 使用 github.com/levigross/grequests包进行请求
+// https://pkg.go.dev/github.com/levigross/grequests 可以查看文档
+EBHttpRequest.Post(context, "http://127.0.0.1:9999/p", &grequests.RequestOptions{
+			JSON: map[string]string{
+				"name": "jilin",
+			},
+		})
+
+
+
+EBHttpRequest.Get(context, "http://127.0.0.1:9999/f", nil)
+```
+
+
 
 ### 配置文件相关 
 

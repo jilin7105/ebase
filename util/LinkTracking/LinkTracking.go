@@ -1,14 +1,16 @@
 package LinkTracking
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/jilin7105/ebase/config"
 	"github.com/jilin7105/ebase/kafka/ProducerAbout"
 	"github.com/jilin7105/ebase/logger"
 )
 
-//全局配置
+// 全局配置
 type trackBaseInfo struct {
 	config     config.LinkTracking
 	serverName string
@@ -25,7 +27,7 @@ type linkTrackLogData struct {
 	LinkTrackSpan       string `json:"link_track_span"`        //事件类型
 	LinkTrackDesc       string `json:"link_track_desc"`        //事件描述
 	LinkTrackTime       string `json:"link_track_time"`        //触发时间
-	LinkTrackActionTime int    `json:"link_track_action_time"` //执行时间
+	LinkTrackActionTime string `json:"link_track_action_time"` //执行时间
 	ServerName          string `json:"server_name"`            //服务名称
 	ServerType          string `json:"server_type"`            //服务类型
 }
@@ -36,7 +38,7 @@ func GetIsOpen() bool {
 	return linkTrackConfig.config.IsOpen
 }
 
-//初始化配置
+// 初始化配置
 func InitLinkTracking(conf config.Config, producer *ProducerAbout.KafkaProducer) error {
 	linkTrackConfig.config = conf.LinkTrack
 	linkTrackConfig.serverName = conf.ServicesName
@@ -99,13 +101,28 @@ func LinkTrackDesc(desc string) Option {
 
 func LinkTrackActionTime(time string) Option {
 	return func(l *linkTrackLogData) {
-		l.LinkTrackTime = time
+		l.LinkTrackActionTime = time
 	}
 }
 
 func LinkTrackTime(time string) Option {
 	return func(l *linkTrackLogData) {
 		l.LinkTrackTime = time
+	}
+}
+
+func GetEbaseRequestID(ctx interface{}) string {
+
+	switch ctx.(type) {
+	case gin.Context:
+		c, _ := ctx.(gin.Context)
+		return c.GetString("EbaseRequestID")
+	case context.Context:
+		c, _ := ctx.(context.Context)
+		return c.Value("EbaseRequestID").(string)
+	default:
+		return ""
+
 	}
 }
 
