@@ -1,11 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jilin7105/ebase"
 	_ "github.com/jilin7105/ebase"
 	"github.com/jilin7105/ebase/helpfunc/EBHttpRequest"
 	"github.com/jilin7105/ebase/logger"
+	"github.com/jilin7105/ebase/util/EbaseGinResponse"
 	"github.com/levigross/grequests"
 	"log"
 	"os"
@@ -48,9 +50,9 @@ func main() {
 	})
 	r.GET("/ping", func(context *gin.Context) {
 		EBHttpRequest.Get(context, "http://127.0.0.1:9999/f", nil)
-		context.JSON(200, gin.H{
-			"message": "pong",
-		})
+		//EbaseGinResponse.OK(context, "pong", "")
+		//EbaseGinResponse.PageOK(context, []int{1, 23, 4, 5}, 10, 1, 1, "")
+		EbaseGinResponse.Error(context, 201, fmt.Errorf("info %s err", "test"), "")
 	})
 	r.GET("/f", func(context *gin.Context) {
 		EBHttpRequest.Post(context, "http://127.0.0.1:9999/p", &grequests.RequestOptions{
@@ -58,9 +60,7 @@ func main() {
 				"name": "jilin",
 			},
 		})
-		context.JSON(200, gin.H{
-			"message": "pong",
-		})
+		EbaseGinResponse.Error(context, 201, fmt.Errorf("info %s err", "test"), "")
 	})
 
 	r.POST("/p", func(context *gin.Context) {

@@ -152,7 +152,16 @@ EBHttpRequest.Post(context, "http://127.0.0.1:9999/p", &grequests.RequestOptions
 EBHttpRequest.Get(context, "http://127.0.0.1:9999/f", nil)
 ```
 
-
+### Gin 统一返回封装
+```go
+import "github.com/jilin7105/ebase/helpfunc/EBHttpRequest"
+//返回分页数据
+EbaseGinResponse.PageOK(c *gin.Context, result any, count int, pageIndex int, pageSize int, msg string)
+//常规返回
+EbaseGinResponse.OK(c *gin.Context, data any, msg string)
+//返回错误信息
+EbaseGinResponse.Error(c *gin.Context, code int, err error, msg string)
+```
 
 ### 配置文件相关 
 
