@@ -55,8 +55,11 @@ func InitHttp(config config.Config) *gin.Engine {
 			logger.Error("LinkTracking error: %v", err)
 		}
 		data.Send()
-		// Log request details
-		logger.Info("Request ID: %s, Path: %s, Time: %v", requestID, c.Request.URL.Path, elapsedTime)
+		if LinkTracking.GetIsLog() {
+			// Log request details
+			logger.Info("Request ID: %s, Path: %s, Time: %v", requestID, c.Request.URL.Path, elapsedTime)
+		}
+
 	})
 
 	if config.HttpGin.AppendPprof {
@@ -89,7 +92,8 @@ func limitByIP() gin.HandlerFunc {
 	return LimitByIP(limiter)
 }
 
-/**
+/*
+*
 ip并发控制
 */
 func LimitByIP(limiter *ipLimiter.IPLimiter) gin.HandlerFunc {

@@ -30,6 +30,7 @@ type Config struct {
 
 type LinkTracking struct {
 	IsOpen            bool   `yaml:"is_open"`             //is_open 是否开启链路追踪
+	IsLog             bool   `yaml:"is_log"`              //is_log 是否开启日志
 	KafkaProducerName string `yaml:"kafka_producer_name"` //kafka 生产者名称
 }
 

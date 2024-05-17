@@ -38,6 +38,10 @@ func GetIsOpen() bool {
 	return linkTrackConfig.config.IsOpen
 }
 
+func GetIsLog() bool {
+	return linkTrackConfig.config.IsLog
+}
+
 // 初始化配置
 func InitLinkTracking(conf config.Config, producer *ProducerAbout.KafkaProducer) error {
 	linkTrackConfig.config = conf.LinkTrack
