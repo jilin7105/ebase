@@ -41,6 +41,7 @@ type Eb struct {
 	grpcServer     *grpc.Server
 	regfunc        func() error
 	heartbeatPush  func() error
+	removefunc     func() error
 	stopFunc       func()
 }
 
@@ -175,6 +176,8 @@ func (e *Eb) stop(c chan os.Signal) {
 			if e.stopFunc != nil {
 				e.stopFunc()
 			}
+
+			e.runRemove()
 			os.Exit(0)
 		default:
 			logger.Info("exit signal: %s", s.String())

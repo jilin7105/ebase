@@ -19,12 +19,26 @@ func SetRegfunc(f func() error) {
 	ebInstance.regfunc = f
 }
 
+// 设置服务注册方法
+func SetRemovefunc(f func() error) {
+	ebInstance.removefunc = f
+}
+
 func (e *Eb) initmicro() {
 	if e.Config.Micro.IsReg {
 		if e.regfunc == nil {
 			panic("未找到 regfunc 方法 \n" +
 				"micro.is_reg 为 true 时  需要设置  regfunc 方法 \n" +
 				"使用 ebase.SetRegfunc() 设置自己的服务注册方法")
+		}
+		go e.runRegfunc()
+	}
+
+	if e.Config.Micro.IsRemoveService {
+		if e.regfunc == nil {
+			panic("未找到 Removefunc 方法 \n" +
+				"micro.is_remove_service 为 true 时  需要设置  removefunc 方法 \n" +
+				"使用 ebase.SetRemovefunc() 设置自己的服务注册方法")
 		}
 		go e.runRegfunc()
 	}
@@ -40,16 +54,16 @@ func (e *Eb) initmicro() {
 				e.runHeartbeatPush()
 			} else {
 				for {
-					e.runHeartbeatPush()
 					duration := time.Duration(speed) * time.Second
 					time.Sleep(duration)
+					e.runHeartbeatPush()
 				}
 			}
 		}(e.Config.Micro.HeartPushSpeed)
 	}
 }
 
-//执行注册方法
+// 执行注册方法
 func (e *Eb) runRegfunc() {
 	defer func() {
 		if r := recover(); r != nil {
@@ -62,7 +76,7 @@ func (e *Eb) runRegfunc() {
 	}
 }
 
-//执行心跳检测方法
+// 执行心跳检测方法
 func (e *Eb) runHeartbeatPush() {
 	defer func() {
 		if r := recover(); r != nil {
@@ -70,6 +84,19 @@ func (e *Eb) runHeartbeatPush() {
 		}
 	}()
 	err := e.heartbeatPush()
+	if err != nil {
+		panic(err)
+	}
+}
+
+// 执行删除注册方法
+func (e *Eb) runRemove() {
+	defer func() {
+		if r := recover(); r != nil {
+			logger.Error("移除失败", r)
+		}
+	}()
+	err := e.removefunc()
 	if err != nil {
 		panic(err)
 	}

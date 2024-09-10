@@ -21,9 +21,10 @@ type Config struct {
 		TraceTracking bool `yaml:"traceTracking"`
 	} `yaml:"grpcServer"`
 	Micro struct {
-		IsReg          bool  `yaml:"is_reg"`           //  is_reg : true  #是否有服务注册
-		IsHeartPush    bool  `yaml:"is_heart_push"`    //  is_heart_push : true  #是否心跳推送
-		HeartPushSpeed int64 `yaml:"heart_push_speed"` //  is_reg : true  #是否有服务注册
+		IsReg           bool  `yaml:"is_reg"`            //  is_reg : true  #是否有服务注册
+		IsHeartPush     bool  `yaml:"is_heart_push"`     //  is_heart_push : true  #是否心跳推送
+		IsRemoveService bool  `yaml:"is_remove_service"` //  is_remove_service : true  #删除服务
+		HeartPushSpeed  int64 `yaml:"heart_push_speed"`  //  is_reg : true  #是否有服务注册
 	} `yaml:"micro"` //micro :
 	LinkTrack LinkTracking `yaml:"linkTracking"`
 }
