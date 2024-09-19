@@ -1,4 +1,4 @@
-package ebasetools
+package main
 
 import (
 	"fmt"
