@@ -1,0 +1,11 @@
+syntax = "proto3";
+package proto;
+option go_package ="./user";
+
+message User {
+  string name = 1;
+  int32 id = 2;  // Unique ID number for this person.
+  string email = 3;
+  string password = 4;
+
+}

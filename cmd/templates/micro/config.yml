@@ -1,0 +1,31 @@
+appType: HTTP #"HTTP", "gRPC", "Task", "Kafka"
+logLevel: 1
+logFile: "mylogfile.log"
+servies_name: test
+
+micro :   # 微服务相关配置  （非必须）
+  is_reg : true  #是否有服务注册
+  is_heart_push : true  #是否心跳推送
+  is_remove_service : true  #是否心跳推送
+  heart_push_speed : 5  #心跳推送速度 单位 秒  如果不填写将只执行1次 ，默认用户方法内部处理心跳逻辑
+
+databases:
+  - name: test11
+    host: 127.0.0.1
+    port: 3306
+    username: root
+    password: root
+    dbname: test
+    maxIdleConns: 10
+    MaxOpenConns: 10
+redis:
+  - name: test22
+    host : 127.0.0.1
+    port : 6379
+    password:
+    db : 0
+    poolSize: 10
+
+httpginServer:
+  port: 9999  #服务端口
+  appendPprof : true #是否在路由中添加 pprof 路由

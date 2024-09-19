@@ -19,7 +19,7 @@ httpginServer:
 
 kafkaProducers:
   - name: linkTrackingKafka
-    brokers: ["127.0.01:9092"] # Kafka集群的地址列表
+    brokers: ["172.16.179.206:9092"] # Kafka集群的地址列表
     topic: auto_LinkTracking # 默认的主题
     compression: gzip # 消息压缩方式，可选的值包括"gzip"、"snappy"、"lz4"、"zstd"、"none"
     timeout: 5000 # 发送消息的超时时间，单位为毫秒

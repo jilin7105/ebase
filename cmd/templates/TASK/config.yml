@@ -1,0 +1,21 @@
+appType: Task #"HTTP", "gRPC", "Task", "Kafka"
+logLevel: 1
+logFile: "mylogfile.log"
+servies_name: test
+
+databases:
+  - name: test
+    host: 127.0.0.1
+    port: 3306
+    username: root
+    password: root
+    dbname: test
+    maxIdleConns: 10
+    MaxOpenConns: 10
+redis:
+  - name: test
+    host : 127.0.0.1
+    port : 6379
+    password:
+    db : 0
+    poolSize: 10

@@ -1,0 +1,18 @@
+appType: Kafka #"HTTP", "gRPC", "Task", "Kafka"
+logLevel: 3
+logFile: "mylogfile.log"
+servies_name: test
+
+
+kafkaConsumers:
+  - name: "ab_test"
+    brokers: ["127.0.0.1:9092"]
+    topics: ["auto_LinkTracking"]
+    groupID: auto_LinkTracking
+    autoOffsetReset: none  # 开始消费的位置，可能的值包括'earliest'、'latest'、'none'
+    maxWaitTime: 3000  # 从Kafka获取记录的最大等待时间（毫秒）
+    sessionTimeout: 6000  # 消费者组会话的超时时间（毫秒）
+    heartbeatInterval: 300  # 心跳间隔时间（毫秒）
+    
+
+
