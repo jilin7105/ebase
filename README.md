@@ -9,11 +9,24 @@
 - 提供服务注册功能。 (简易实现)
 
 ## 快速开始
-
+### 方式 1
 要使用`ebase`，首先需要下载和安装Go。然后，可以使用`go get`命令下载并安装`ebase`：
 
 ```bash
 go get github.com/jilin7105/ebase
+```
+### 方式 2
+
+```bash
+# 下载并安装工具包
+go install github.com/jilin7105/ebasetools 
+
+# 创建一个名为my-api-project的新项目   --type=  "HTTP", "KAFKA", "GRPC", "TASK"  
+# TASK => 定时任务项目 
+# HTTP => api 项目
+# KAFKA => kafka 消费者 项目
+# KAFKA => GRPC  grpc 项目
+ebasetools create --type=HTTP --name=my-api-project
 ```
 
 给eb传入当前工作目录， 由于各种原因， 防止ebase获取不到工作目录，或者获取不准确
