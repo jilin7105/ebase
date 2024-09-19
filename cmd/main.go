@@ -1,7 +1,7 @@
 package main
 
 import (
-	"ebasetools/app"
+	"github.com/jilin7105/ebase/cmd/app"
 	"log"
 )
 
