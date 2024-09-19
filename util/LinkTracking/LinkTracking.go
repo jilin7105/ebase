@@ -66,7 +66,7 @@ func NewLinkTrackLogData(options ...Option) (*linkTrackLogData, error) {
 	}()
 	if !linkTrackConfig.config.IsOpen {
 		//如果配置文件未开启，返回错误信息
-		return nil, fmt.Errorf("未开启链路追踪")
+		return nil, nil
 	}
 	l := &linkTrackLogData{
 
