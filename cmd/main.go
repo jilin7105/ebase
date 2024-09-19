@@ -1,11 +1,12 @@
 package main
 
 import (
+	"ebasetools/app"
 	"log"
 )
 
 func main() {
-	if err := RootCmd.Execute(); err != nil {
+	if err := app.RootCmd.Execute(); err != nil {
 		log.Fatal(err)
 	}
 }
