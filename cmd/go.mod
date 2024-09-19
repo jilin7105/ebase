@@ -1,4 +1,4 @@
-module github.com/jilin7105/ebase/cmd
+module github.com/jilin7105/ebase/cmd/ebasetools
 
 go 1.20
 
