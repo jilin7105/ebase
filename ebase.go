@@ -176,8 +176,9 @@ func (e *Eb) stop(c chan os.Signal) {
 			if e.stopFunc != nil {
 				e.stopFunc()
 			}
-
-			e.runRemove()
+			if e.Config.Micro.IsRemoveService {
+				e.runRemove()
+			}
 			os.Exit(0)
 		default:
 			logger.Info("exit signal: %s", s.String())
