@@ -15,7 +15,7 @@ import (
 	"github.com/jilin7105/ebase/logger"
 	"go.mongodb.org/mongo-driver/mongo"
 	"google.golang.org/grpc"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 	"gorm.io/gorm"
 	"io/ioutil"
 	"log"
@@ -70,6 +70,15 @@ func GetEsV8(name string) *esv8.Client {
 // GetMongo 获取Mongo客户端
 func GetMongo(name string) *mongo.Client {
 	client, ok := ebInstance.Mongo[name]
+	if !ok {
+		return nil
+	}
+	return client
+}
+
+// // GetclickHouse 获取Mongo客户端
+func GetClickHouse(name string) *gorm.DB {
+	client, ok := ebInstance.ClickHouse[name]
 	if !ok {
 		return nil
 	}

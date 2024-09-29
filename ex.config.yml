@@ -43,6 +43,18 @@ kafkaProducers:
     returnSuccesses: false   # 是否返回成功发送的消息
     newManualPartitioner: false  #是否手动分配分区
 
+ClickHouse:
+  - name: "es1"
+    hosts: ["http://127.0.0.1:9000"]
+    user: ""
+    pass: ""
+    db: "table"
+    readTimeout: 10
+    writeTimeout: 10
+
+    
+
+
 es:
   - name: "es1"
     hosts: ["http://127.0.0.1:9200"] # ES集群的地址列表  携带协议 http|https://host:port

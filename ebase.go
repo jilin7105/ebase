@@ -16,7 +16,7 @@ import (
 	"github.com/jilin7105/ebase/task"
 	"go.mongodb.org/mongo-driver/mongo"
 	"google.golang.org/grpc"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 	"gorm.io/gorm"
 	"io/ioutil"
 	"log"
@@ -34,6 +34,7 @@ type Eb struct {
 	Redis          map[string]*redis.Client
 	kafkaProducer  map[string]*ProducerAbout.KafkaProducer
 	Mongo          map[string]*mongo.Client
+	ClickHouse     map[string]*gorm.DB
 	serviceTask    *gocron.Scheduler
 	serciceHttp    *gin.Engine
 	projectPath    string
@@ -49,6 +50,7 @@ type Eb struct {
 var ebInstance = &Eb{
 	cxt:           context.Background(),
 	DBs:           map[string]*gorm.DB{},
+	ClickHouse:    map[string]*gorm.DB{},
 	ES:            map[string]EsEbase{},
 	Redis:         map[string]*redis.Client{},
 	Mongo:         map[string]*mongo.Client{},
@@ -92,7 +94,8 @@ func Init() {
 
 	//es 初始化
 	ebInstance.inites()
-
+	//clickhouse 初始化
+	ebInstance.initCk()
 	//mongo 初始化
 	ebInstance.initMongo()
 }

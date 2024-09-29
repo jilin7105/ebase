@@ -7,6 +7,7 @@ type Config struct {
 	Databases      []DbConfig             `yaml:"databases"`
 	Mongo          []MongoConfig          `yaml:"mongoConfig"`
 	Es             []EsConfig             `yaml:"es"`
+	ClickHouse     []ClickHouseConfig     `yaml:"ClickHouse"`
 	Redis          []RedisConfig          `yaml:"redis"`
 	KafkaProducers []KafkaProducerConfig  `yaml:"kafkaProducers"`
 	ServicesName   string                 `yaml:"servies_name"`
@@ -103,4 +104,14 @@ type MongoConfig struct {
 	Password string `yaml:"password"`
 	Dbname   string `yaml:"dbname"`
 	Name     string `yaml:"name"`
+}
+
+type ClickHouseConfig struct {
+	Name         string   `yaml:"name"`
+	Hosts        []string `yaml:"hosts"`
+	User         string   `yaml:"user"`
+	Pass         string   `yaml:"pass"`
+	Db           string   `yaml:"db"`
+	ReadTimeout  int64    `yaml:"readTimeout"`
+	WriteTimeout int64    `yaml:"writeTimeout"`
 }
