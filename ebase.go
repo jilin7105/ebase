@@ -4,6 +4,12 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"io/ioutil"
+	"log"
+	"os"
+	"os/signal"
+	"syscall"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-co-op/gocron"
 	"github.com/go-redis/redis/v8"
@@ -18,11 +24,6 @@ import (
 	"google.golang.org/grpc"
 	"gopkg.in/yaml.v3"
 	"gorm.io/gorm"
-	"io/ioutil"
-	"log"
-	"os"
-	"os/signal"
-	"syscall"
 )
 
 type Eb struct {
@@ -80,7 +81,12 @@ func Init() {
 	ebInstance.LoadConfig()
 	// 从配置中设置日志级别和日志文件
 	logger.SetLogLevel(ebInstance.Config.LogLevel)
-	logger.SetLogFile(ebInstance.projectPath + "/" + ebInstance.Config.LogFile)
+	logger.SetLogServiceName(ebInstance.Config.ServicesName)
+
+	if ebInstance.Config.LogFile != "" {
+		logger.SetLogFile(ebInstance.projectPath + "/" + ebInstance.Config.LogFile)
+	}
+
 	ebInstance.initRedis()
 	ebInstance.initMysql()
 	ebInstance.InitKafkaProducer()
