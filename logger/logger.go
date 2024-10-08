@@ -9,6 +9,9 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/Flyingmn/gzap"
+	"go.uber.org/zap"
 )
 
 var (
@@ -34,6 +37,23 @@ const (
 
 func SetLogLevel(level int) {
 	logLevel = level
+
+	//zap设置
+	switch level {
+	case DebugLevel:
+		gzap.SetZapCfg(gzap.ZapLevel("debug"))
+	case InfoLevel:
+		gzap.SetZapCfg(gzap.ZapLevel("info"))
+	case WarnLevel:
+		gzap.SetZapCfg(gzap.ZapLevel("warn"))
+	case ErrorLevel:
+		gzap.SetZapCfg(gzap.ZapLevel("error"))
+	default:
+		gzap.SetZapCfg(gzap.ZapLevel("info"))
+	}
+}
+func SetLogServiceName(serviceName string) {
+	gzap.SetZapCfg(gzap.SetPresetFields(map[string]any{"service": serviceName}))
 }
 
 func SetLogFile(file string) {
@@ -49,6 +69,16 @@ func SetLogFile(file string) {
 		errorLogger = log.New(logOut, "[ERROR] ", log.LstdFlags)
 		day = now.YearDay()
 		dayChangeLock = sync.RWMutex{}
+
+		//zap设置
+		gzap.SetZapCfg(
+			gzap.ZapOutFile(
+				logFile,                       //文件位置
+				gzap.ZapOutFileMaxSize(2048),  // 日志文件的最大大小(MB为单位)
+				gzap.ZapOutFileMaxAge(365),    //保留旧文件的最大天数量
+				gzap.ZapOutFileMaxBackups(50), //保留旧文件的最大个数
+			),
+		)
 	}
 }
 
@@ -132,4 +162,30 @@ func getLineNo() (string, string, int) {
 	} else {
 		return "", "", 0
 	}
+}
+
+func Debugz(msg string, fields ...zap.Field) {
+	gzap.Debug(msg, fields...)
+}
+func Infoz(msg string, fields ...zap.Field) {
+	gzap.Info(msg, fields...)
+}
+func Warnz(msg string, fields ...zap.Field) {
+	gzap.Warn(msg, fields...)
+}
+func Errorz(msg string, fields ...zap.Field) {
+	gzap.Error(msg, fields...)
+}
+
+func Debugw(msg string, keysAndValues ...interface{}) {
+	gzap.Debugw(msg, keysAndValues...)
+}
+func Infow(msg string, keysAndValues ...interface{}) {
+	gzap.Infow(msg, keysAndValues...)
+}
+func Warnw(msg string, keysAndValues ...interface{}) {
+	gzap.Warnw(msg, keysAndValues...)
+}
+func Errorw(msg string, keysAndValues ...interface{}) {
+	gzap.Errorw(msg, keysAndValues...)
 }
