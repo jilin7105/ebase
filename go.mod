@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.23.2
-	github.com/Flyingmn/gzap v1.0.0
+	github.com/Flyingmn/gzap v1.0.1
 	github.com/Shopify/sarama v1.38.1
 	github.com/elastic/go-elasticsearch/v7 v7.17.10
 	github.com/elastic/go-elasticsearch/v8 v8.13.0

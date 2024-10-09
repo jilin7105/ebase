@@ -51,6 +51,9 @@ func SetLogLevel(level int) {
 	default:
 		gzap.SetZapCfg(gzap.ZapLevel("info"))
 	}
+
+	//zap设置CallerSkip 2
+	gzap.SetZapCfg(gzap.ZapCallerSkip(2))
 }
 func SetLogServiceName(serviceName string) {
 	gzap.SetZapCfg(gzap.SetPresetFields(map[string]any{"service": serviceName}))
