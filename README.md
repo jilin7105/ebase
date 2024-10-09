@@ -48,6 +48,26 @@ logger.Debug("This is a debug log.")
 logger.Warn("This is a warning log.")
 logger.Error("This is an error log.")
 
+logger.Info("hello world; name:%s; age:%d", "zhangsan", 18)
+/* [INFO] xxx/xxx.go:47 hello world; name:zhangsan; age:18 */
+
+// zap - *zap.Logger
+logger.Infoz("hello world", zap.String("name", "zhangsan"), zap.Int("age", 18))
+/* 一行内,这里为方便展示将json格式化
+{
+    "level":"info",
+    "time":"2024-10-01 12:00:00.000",
+    "line":"/zap/zap_test.go:143",
+    "func":"zap_test.TestFunc",
+    "msg":"hello world",
+    "name":"zhangsan",
+    "age":18
+}
+*/
+
+// 带语法糖的zap - *zap.SugaredLogger; 性能不敏感场景下使用
+logger.Infow("hello world", "name", "zhangsan", "age", 18)
+/* 格式同上 */
 ```
 
 在代码中使用数据库
