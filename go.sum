@@ -4,8 +4,8 @@ github.com/ClickHouse/ch-go v0.61.5 h1:zwR8QbYI0tsMiEcze/uIMK+Tz1D3XZXLdNrlaOpeE
 github.com/ClickHouse/ch-go v0.61.5/go.mod h1:s1LJW/F/LcFs5HJnuogFMta50kKDO0lf9zzfrbl0RQg=
 github.com/ClickHouse/clickhouse-go/v2 v2.23.2 h1:+DAKPMnxLS7pduQZsrJc8OhdLS2L9MfDEJ2TS+hpYDM=
 github.com/ClickHouse/clickhouse-go/v2 v2.23.2/go.mod h1:aNap51J1OM3yxQJRgM+AlP/MPkGBCL8A74uQThoQhR0=
-github.com/Flyingmn/gzap v1.0.0 h1:l4KmxzwG/y7srDebRRKDjJfvn2utV+Ml34mG4SOv/44=
-github.com/Flyingmn/gzap v1.0.0/go.mod h1:Kwb5/HQDwSNJJ1eKii8UFX9+OB2dVDYYTZgqWKLKNck=
+github.com/Flyingmn/gzap v1.0.1 h1:Fb/3c0HlXf5r5hHxvPUdid2Dkmp6cFL6pASR7XUIGg8=
+github.com/Flyingmn/gzap v1.0.1/go.mod h1:Kwb5/HQDwSNJJ1eKii8UFX9+OB2dVDYYTZgqWKLKNck=
 github.com/Shopify/sarama v1.38.1 h1:lqqPUPQZ7zPqYlWpTh+LQ9bhYNu2xJL6k1SJN4WVe2A=
 github.com/Shopify/sarama v1.38.1/go.mod h1:iwv9a67Ha8VNa+TifujYoWGxWnu2kNVAQdSdZ4X2o5g=
 github.com/Shopify/toxiproxy/v2 v2.5.0 h1:i4LPT+qrSlKNtQf5QliVjdP08GyAH8+BUIc9gT0eahc=
