@@ -114,4 +114,5 @@ type ClickHouseConfig struct {
 	Db           string   `yaml:"db"`
 	ReadTimeout  int64    `yaml:"readTimeout"`
 	WriteTimeout int64    `yaml:"writeTimeout"`
+	Debug        bool     `yaml:"debug"`
 }

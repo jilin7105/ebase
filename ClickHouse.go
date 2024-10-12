@@ -35,7 +35,7 @@ func newCk(ckc config.ClickHouseConfig) (db *gorm.DB, err error) {
 			std_ck.CompressionLZ4,
 			3,
 		},
-		Debug: true,
+		Debug: ckc.Debug,
 	})
 
 	db, err = gorm.Open(clickhouse.New(clickhouse.Config{

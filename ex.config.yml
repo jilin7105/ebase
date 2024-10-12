@@ -51,6 +51,7 @@ ClickHouse:
     db: "table"
     readTimeout: 10
     writeTimeout: 10
+    debug: true
 
     
 
