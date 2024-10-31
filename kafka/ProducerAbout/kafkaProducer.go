@@ -21,3 +21,20 @@ func (kp *KafkaProducer) Send(msg_str string) (partition int32, offset int64, er
 	partition, offset, err = (*kp.Sp).SendMessage(kafka_msg)
 	return
 }
+
+// 批量发送
+func (kp *KafkaProducer) SendBatch(msg_strs []string) (err error) {
+
+	var kafka_msgs []*sarama.ProducerMessage
+
+	for _, msg_str := range msg_strs {
+		kafka_msg := &sarama.ProducerMessage{
+			Topic: kp.Topic,
+			Value: sarama.StringEncoder(msg_str),
+		}
+		kafka_msgs = append(kafka_msgs, kafka_msg)
+	}
+
+	err = (*kp.Sp).SendMessages(kafka_msgs)
+	return
+}
