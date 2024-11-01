@@ -26,6 +26,7 @@ func NewKafkaConsumer(config *config.KafkaConsumerConfig) (*KafkaConsumer, error
 		saramaConfig.Consumer.Offsets.Initial = sarama.OffsetOldest
 	}
 	saramaConfig.Consumer.MaxWaitTime = time.Duration(config.MaxWaitTime) * time.Millisecond
+	saramaConfig.Consumer.MaxProcessingTime = time.Duration(config.MaxProcessingTime) * time.Millisecond
 	saramaConfig.Consumer.Group.Session.Timeout = time.Duration(config.SessionTimeout) * time.Millisecond
 	saramaConfig.Consumer.Group.Heartbeat.Interval = time.Duration(config.HeartbeatInterval) * time.Millisecond
 

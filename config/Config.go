@@ -66,6 +66,7 @@ type KafkaConsumerConfig struct {
 	AutoOffsetReset   string   `yaml:"autoOffsetReset"`
 	GroupID           string   `yaml:"groupID"`
 	MaxWaitTime       int      `yaml:"maxWaitTime"`
+	MaxProcessingTime int      `yaml:"maxProcessingTime"`
 	SessionTimeout    int      `yaml:"sessionTimeout"`
 	HeartbeatInterval int      `yaml:"heartbeatInterval"`
 }
