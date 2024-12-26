@@ -31,28 +31,30 @@ type Eb struct {
 	ConfigFileName string
 	Config         config.Config
 	DBs            map[string]*gorm.DB
-	ES             map[string]EsEbase
-	Redis          map[string]*redis.Client
-	kafkaProducer  map[string]*ProducerAbout.KafkaProducer
-	Mongo          map[string]*mongo.Client
-	ClickHouse     map[string]*gorm.DB
-	serviceTask    *gocron.Scheduler
-	serciceHttp    *gin.Engine
-	projectPath    string
-	kafkaConsumer  map[string]*ConsumerAbout.KafkaConsumer
-	grpcServer     *grpc.Server
-	regfunc        func() error
-	heartbeatPush  func() error
-	removefunc     func() error
-	stopFunc       func()
+	//ES             map[string]EsEbase
+	Redis         map[string]*redis.Client
+	kafkaProducer map[string]*ProducerAbout.KafkaProducer
+	Mongo         map[string]*mongo.Client
+	ClickHouse    map[string]*gorm.DB
+	Linker        map[string]map[string]any
+	serviceTask   *gocron.Scheduler
+	serciceHttp   *gin.Engine
+	projectPath   string
+	kafkaConsumer map[string]*ConsumerAbout.KafkaConsumer
+	grpcServer    *grpc.Server
+	regfunc       func() error
+	heartbeatPush func() error
+	removefunc    func() error
+	stopFunc      func()
 }
 
 // 定义全局的Eb实例
 var ebInstance = &Eb{
-	cxt:           context.Background(),
-	DBs:           map[string]*gorm.DB{},
-	ClickHouse:    map[string]*gorm.DB{},
-	ES:            map[string]EsEbase{},
+	cxt:        context.Background(),
+	DBs:        map[string]*gorm.DB{},
+	ClickHouse: map[string]*gorm.DB{},
+	Linker:     map[string]map[string]any{},
+	//ES:            map[string]EsEbase{},
 	Redis:         map[string]*redis.Client{},
 	Mongo:         map[string]*mongo.Client{},
 	kafkaProducer: map[string]*ProducerAbout.KafkaProducer{},
@@ -99,7 +101,7 @@ func Init() {
 	ebInstance.initLinkTracking()
 
 	//es 初始化
-	ebInstance.inites()
+	//ebInstance.inites()
 	//clickhouse 初始化
 	ebInstance.initCk()
 	//mongo 初始化

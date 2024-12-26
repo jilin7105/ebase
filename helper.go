@@ -5,14 +5,13 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Shopify/sarama"
-	esv7 "github.com/elastic/go-elasticsearch/v7"
-	esv8 "github.com/elastic/go-elasticsearch/v8"
 	"github.com/gin-gonic/gin"
 	"github.com/go-co-op/gocron"
 	"github.com/go-redis/redis/v8"
 	"github.com/jilin7105/ebase/kafka/ConsumerAbout"
 	"github.com/jilin7105/ebase/kafka/ProducerAbout"
 	"github.com/jilin7105/ebase/logger"
+	"github.com/jilin7105/ebase/service_link"
 	"go.mongodb.org/mongo-driver/mongo"
 	"google.golang.org/grpc"
 	"gopkg.in/yaml.v3"
@@ -50,22 +49,22 @@ func GetKafka(name string) *ProducerAbout.KafkaProducer {
 }
 
 // GetEs 获取ES客户端
-func GetEsV7(name string) *esv7.Client {
-	client, ok := ebInstance.ES[name]
-	if !ok {
-		return nil
-	}
-	return client.esv7
-}
-
-// GetEs 获取ES客户端
-func GetEsV8(name string) *esv8.Client {
-	client, ok := ebInstance.ES[name]
-	if !ok {
-		return nil
-	}
-	return client.esv8
-}
+//func GetEsV7(name string) *esv7.Client {
+//	client, ok := ebInstance.ES[name]
+//	if !ok {
+//		return nil
+//	}
+//	return client.esv7
+//}
+//
+//// GetEs 获取ES客户端
+//func GetEsV8(name string) *esv8.Client {
+//	client, ok := ebInstance.ES[name]
+//	if !ok {
+//		return nil
+//	}
+//	return client.esv8
+//}
 
 // GetMongo 获取Mongo客户端
 func GetMongo(name string) *mongo.Client {
@@ -83,6 +82,20 @@ func GetClickHouse(name string) *gorm.DB {
 		return nil
 	}
 	return client
+}
+
+// 获取linker 用户自定义链接
+func GetLinker(type_ string, name string) (any, error) {
+	type_map, ok := ebInstance.Linker[type_]
+	if !ok {
+		return nil, errors.New("未初始化自定义链接服务(" + type_ + ")，请检测服务类型 ")
+	}
+
+	client, ok := type_map[name]
+	if !ok {
+		return nil, errors.New("未初始化自定义链接服务(" + type_ + ":" + name + ")，请检测服务配置 ")
+	}
+	return client, nil
 }
 
 func (e *Eb) GetTaskServer() (*gocron.Scheduler, error) {
@@ -163,6 +176,27 @@ func (e *Eb) SelfLoadConfig(out interface{}) error {
 // 写入退出回调信息
 func (e *Eb) SetStopFunc(f func()) {
 	e.stopFunc = f
+}
+
+// 注册自定义链接
+func (e *Eb) RegisterLinker(linker_configs []service_link.Linker, type_ string) {
+	err := e.SelfLoadConfig(&linker_configs)
+	if err != nil {
+		logger.Info("解析失败[%s]yaml文件无法解析该类型", type_, err.Error())
+		return
+	}
+	l := map[string]any{}
+	for _, config := range linker_configs {
+		name := config.GetName()
+		linker, err := config.CreateLink()
+		if err != nil {
+			logger.Error("初始化失败%s - %s ;err:%s", type_, name, err.Error())
+			continue
+		}
+		l[name] = linker
+	}
+
+	e.Linker[type_] = l
 }
 
 func (e *Eb) EasyRegisterKafkaHandle(name string, options ...func(*ConsumerAbout.ConsumerGroupHandler)) {
