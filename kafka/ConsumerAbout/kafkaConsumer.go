@@ -30,6 +30,16 @@ func NewKafkaConsumer(config *config.KafkaConsumerConfig) (*KafkaConsumer, error
 	saramaConfig.Consumer.Group.Session.Timeout = time.Duration(config.SessionTimeout) * time.Millisecond
 	saramaConfig.Consumer.Group.Heartbeat.Interval = time.Duration(config.HeartbeatInterval) * time.Millisecond
 
+	if config.SASL_Enable {
+
+		saramaConfig.Net.SASL.Enable = config.SASL_Enable
+		saramaConfig.Net.SASL.User = config.SASL_User
+		saramaConfig.Net.SASL.Password = config.SASL_Password
+		saramaConfig.Net.SASL.Handshake = config.SASL_Handshake
+		saramaConfig.Net.SASL.Mechanism = sarama.SASLMechanism(config.SASL_Mechanism)
+
+	}
+
 	consumer, err := sarama.NewConsumerGroup(config.Brokers, config.GroupID, saramaConfig)
 	if err != nil {
 		return nil, err

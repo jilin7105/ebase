@@ -69,6 +69,11 @@ type KafkaConsumerConfig struct {
 	MaxProcessingTime int      `yaml:"maxProcessingTime"`
 	SessionTimeout    int      `yaml:"sessionTimeout"`
 	HeartbeatInterval int      `yaml:"heartbeatInterval"`
+	SASL_Enable       bool     `yaml:"sasl_enable"`
+	SASL_User         string   `yaml:"sasl_user"`
+	SASL_Password     string   `yaml:"sasl_password"`
+	SASL_Mechanism    string   `yaml:"sasl_mechanism"`
+	SASL_Handshake    bool     `yaml:"sasl_handshake"`
 }
 
 type KafkaProducerConfig struct {

@@ -95,6 +95,11 @@ kafkaConsumers:
     maxWaitTime: 500  # 从Kafka获取记录的最大等待时间（毫秒）
     sessionTimeout: 10000  # 消费者组会话的超时时间（毫秒）
     heartbeatInterval: 3000  # 心跳间隔时间（毫秒）
+    sasl_enable: true
+    sasl_user: user
+    sasl_password: password
+    sasl_mechanism: SCRAM-SHA-256    #SCRAM-SHA-256, SCRAM-SHA-512,PLAIN
+    sasl_handshake: true
 
 
 linkTracking:
