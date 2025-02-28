@@ -14,6 +14,7 @@ require (
 	github.com/lib/pq v1.10.9
 	github.com/rs/xid v1.5.0
 	github.com/stretchr/testify v1.9.0
+	github.com/xdg-go/scram v1.1.2
 	go.mongodb.org/mongo-driver v1.14.0
 	go.uber.org/zap v1.27.0
 	golang.org/x/sync v0.7.0
@@ -86,7 +87,6 @@ require (
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
-	github.com/xdg-go/scram v1.1.2 // indirect
 	github.com/xdg-go/stringprep v1.0.4 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20181117223130-1be2e3e5546d // indirect
 	go.opentelemetry.io/otel v1.26.0 // indirect
