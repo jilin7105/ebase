@@ -38,6 +38,14 @@ func NewKafkaConsumer(config *config.KafkaConsumerConfig) (*KafkaConsumer, error
 		saramaConfig.Net.SASL.Handshake = config.SASL_Handshake
 		saramaConfig.Net.SASL.Mechanism = sarama.SASLMechanism(config.SASL_Mechanism)
 
+		if saramaConfig.Net.SASL.Mechanism == sarama.SASLTypeSCRAMSHA512 {
+			saramaConfig.Net.SASL.SCRAMClientGeneratorFunc = func() sarama.SCRAMClient { return &XDGSCRAMClient{HashGeneratorFcn: SHA512} }
+			//saramaConfig.Net.SASL.Mechanism = sarama.SASLTypeSCRAMSHA512
+		} else if saramaConfig.Net.SASL.Mechanism == sarama.SASLTypeSCRAMSHA256 {
+			saramaConfig.Net.SASL.SCRAMClientGeneratorFunc = func() sarama.SCRAMClient { return &XDGSCRAMClient{HashGeneratorFcn: SHA256} }
+
+		}
+
 	}
 
 	consumer, err := sarama.NewConsumerGroup(config.Brokers, config.GroupID, saramaConfig)
