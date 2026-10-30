@@ -4,12 +4,14 @@ import (
 	"context"
 	"crypto/sha256"
 	"crypto/sha512"
+	"crypto/tls"
 	"fmt"
+	"log"
+	"time"
+
 	"github.com/jilin7105/ebase/config"
 	"github.com/jilin7105/ebase/logger"
 	"github.com/xdg-go/scram"
-	"log"
-	"time"
 
 	"github.com/Shopify/sarama"
 )
@@ -47,6 +49,14 @@ func NewKafkaConsumer(config *config.KafkaConsumerConfig) (*KafkaConsumer, error
 		} else if saramaConfig.Net.SASL.Mechanism == sarama.SASLTypeSCRAMSHA256 {
 			saramaConfig.Net.SASL.SCRAMClientGeneratorFunc = func() sarama.SCRAMClient { return &XDGSCRAMClient{HashGeneratorFcn: SHA256} }
 
+		}
+
+	}
+
+	if config.TLS_Enable {
+		saramaConfig.Net.TLS.Enable = config.TLS_Enable
+		saramaConfig.Net.TLS.Config = &tls.Config{
+			InsecureSkipVerify: true, // 加这一句
 		}
 
 	}

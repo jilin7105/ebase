@@ -60,20 +60,22 @@ type RedisConfig struct {
 }
 
 type KafkaConsumerConfig struct {
-	Name              string   `yaml:"name"`
-	Brokers           []string `yaml:"brokers"`
-	Topics            []string `yaml:"topics"`
-	AutoOffsetReset   string   `yaml:"autoOffsetReset"`
-	GroupID           string   `yaml:"groupID"`
-	MaxWaitTime       int      `yaml:"maxWaitTime"`
-	MaxProcessingTime int      `yaml:"maxProcessingTime"`
-	SessionTimeout    int      `yaml:"sessionTimeout"`
-	HeartbeatInterval int      `yaml:"heartbeatInterval"`
-	SASL_Enable       bool     `yaml:"sasl_enable"`
-	SASL_User         string   `yaml:"sasl_user"`
-	SASL_Password     string   `yaml:"sasl_password"`
-	SASL_Mechanism    string   `yaml:"sasl_mechanism"`
-	SASL_Handshake    bool     `yaml:"sasl_handshake"`
+	Name                     string   `yaml:"name"`
+	Brokers                  []string `yaml:"brokers"`
+	Topics                   []string `yaml:"topics"`
+	AutoOffsetReset          string   `yaml:"autoOffsetReset"`
+	GroupID                  string   `yaml:"groupID"`
+	MaxWaitTime              int      `yaml:"maxWaitTime"`
+	MaxProcessingTime        int      `yaml:"maxProcessingTime"`
+	SessionTimeout           int      `yaml:"sessionTimeout"`
+	HeartbeatInterval        int      `yaml:"heartbeatInterval"`
+	SASL_Enable              bool     `yaml:"sasl_enable"`
+	SASL_User                string   `yaml:"sasl_user"`
+	SASL_Password            string   `yaml:"sasl_password"`
+	SASL_Mechanism           string   `yaml:"sasl_mechanism"`
+	SASL_Handshake           bool     `yaml:"sasl_handshake"`
+	TLS_Enable               bool     `yaml:"tls_enable"`
+	Tls_Insecure_Skip_Verify bool     `yaml:"tls_insecure_skip_verify"`
 }
 
 type KafkaProducerConfig struct {
