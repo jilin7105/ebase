@@ -1,11 +1,13 @@
 package ebase
 
 import (
+	"crypto/tls"
+	"time"
+
 	"github.com/Shopify/sarama"
 	"github.com/jilin7105/ebase/config"
 	"github.com/jilin7105/ebase/kafka/ProducerAbout"
 	"github.com/jilin7105/ebase/logger"
-	"time"
 )
 
 func newKafkaProducer(config config.KafkaProducerConfig) (*ProducerAbout.KafkaProducer, error) {
@@ -45,6 +47,19 @@ func newKafkaProducer(config config.KafkaProducerConfig) (*ProducerAbout.KafkaPr
 	} else {
 		saramaConfig.Producer.RequiredAcks = sarama.WaitForLocal
 	}
+
+	if config.SASL_Enable {
+		saramaConfig.Net.SASL.Enable = config.SASL_Enable
+		saramaConfig.Net.SASL.User = config.SASL_User
+		saramaConfig.Net.SASL.Password = config.SASL_Password
+		saramaConfig.Net.SASL.Handshake = config.SASL_Handshake
+		saramaConfig.Net.SASL.Mechanism = sarama.SASLMechanism(config.SASL_Mechanism)
+	}
+	if config.TLS_Enable {
+		saramaConfig.Net.TLS.Enable = true
+		saramaConfig.Net.TLS.Config = &tls.Config{InsecureSkipVerify: true}
+	}
+
 	//"gzip"、、"lz4"、"zstd"、"none"
 	switch config.Compression {
 	case "gzip":

@@ -79,18 +79,25 @@ type KafkaConsumerConfig struct {
 }
 
 type KafkaProducerConfig struct {
-	Name                 string   `yaml:"name"`
-	Brokers              []string `yaml:"brokers"`
-	Topic                string   `yaml:"topic"`
-	Compression          string   `yaml:"compression"`
-	Timeout              int      `yaml:"timeout"`
-	BatchSize            int      `yaml:"batchSize"`
-	BatchTime            int      `yaml:"batchTime"`
-	WaitForAll           bool     `yaml:"waitForAll"`
-	MaxRetries           int      `yaml:"maxRetries"`
-	RetryBackoff         int      `yaml:"retryBackoff"`
-	ReturnSuccesses      bool     `yaml:"returnSuccesses"`
-	NewManualPartitioner bool     `yaml:"newManualPartitioner"`
+	Name                     string   `yaml:"name"`
+	Brokers                  []string `yaml:"brokers"`
+	Topic                    string   `yaml:"topic"`
+	Compression              string   `yaml:"compression"`
+	Timeout                  int      `yaml:"timeout"`
+	BatchSize                int      `yaml:"batchSize"`
+	BatchTime                int      `yaml:"batchTime"`
+	WaitForAll               bool     `yaml:"waitForAll"`
+	MaxRetries               int      `yaml:"maxRetries"`
+	RetryBackoff             int      `yaml:"retryBackoff"`
+	ReturnSuccesses          bool     `yaml:"returnSuccesses"`
+	NewManualPartitioner     bool     `yaml:"newManualPartitioner"`
+	SASL_Enable              bool     `yaml:"sasl_enable"`
+	SASL_User                string   `yaml:"sasl_user"`
+	SASL_Password            string   `yaml:"sasl_password"`
+	SASL_Mechanism           string   `yaml:"sasl_mechanism"`
+	SASL_Handshake           bool     `yaml:"sasl_handshake"`
+	TLS_Enable               bool     `yaml:"tls_enable"`
+	Tls_Insecure_Skip_Verify bool     `yaml:"tls_insecure_skip_verify"`
 }
 
 // es 配置信息
